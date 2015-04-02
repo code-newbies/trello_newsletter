@@ -15,12 +15,22 @@ class TrelloNewsletter
   board_name = "CodeNewbie Newsletter"
   board = Trello::Board.all.find { |b| b.name == board_name }
   lists = board.lists
+
   meta_list = lists.select { |n| n.attributes[:name] == "Meta" }.first
   meta = Meta.new(meta_list)
+
   headlines_list = lists.select { |n| n.attributes[:name] == "Headlines" }.first
+  template = File.open("index.html", "w")
+  template.puts <<-DOC.gsub(/^ {4}/, '')
+  <img src=#{meta.header_image} alt="Header Image">
+  <p>Published at: #{meta.published_at}</p>
+  <p>#{meta.intro_text}</p>
+  DOC
   headlines_list.cards.each do |card|
     post = Post.new(card)
-    binding.pry
+    template.puts "    <h2>#{post.title}</h2>"
+    template.puts "    #{post.body}"
   end
+  puts "Finished generating issue"
 end
 
