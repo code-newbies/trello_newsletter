@@ -2,6 +2,7 @@ require_relative "trello_newsletter/version"
 require_relative "meta.rb"
 require_relative "post.rb"
 require "trello"
+require "mailchimp"
 require "pry"
 
 Trello.configure do |config|
@@ -49,5 +50,20 @@ class TrelloNewsletter
     template.puts "FINISHED!"
     template.close
   end
-end
 
+  # https://apidocs.mailchimp.com/api/2.0/campaigns/create.php
+  # https://apidocs.mailchimp.com/api/2.0/lists/list.php
+  def export_to_mailchimp
+    mailchimp = Mailchimp::API.new(MAILCHIMP-API-KEY)
+    all_lists = mailchimp.lists.list
+    from_website_list = all_lists.select { |n| n.attributes['data']['name'] == "From Website" }
+    # Zip index.html and css
+    # create new mailchimp campaign and import the zip folder to it.
+    # Line 1539 in Mailchimp api gem source code
+    # Everything in the tracking option defaults to true except text clicks.
+    mailchimp.campaigns.create("regular", {list_id: from_website_list, subject: "Subject line", 
+                                           from_email: "hello@codenewbie.org", from_name: "#CodeNewbie", to_name: "*|FNAME|*",
+                                            tracking: {text_clicks: true}},
+                                           {archive: "archive name", archive_type: "zip"})
+  end 
+end
