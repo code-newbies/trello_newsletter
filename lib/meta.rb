@@ -16,6 +16,11 @@ class Meta
     #find_card("Date").desc
   end
 
+  def preview_text
+    text = find_card("Preview").desc
+    md_to_html(text)
+  end
+
   def intro_text
     text = find_card("Intro").desc
     md_to_html(text)
