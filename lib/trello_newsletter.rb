@@ -3,7 +3,6 @@ require_relative "meta.rb"
 require_relative "post.rb"
 require "trello"
 require "mailchimp"
-require "pry"
 
 Trello.configure do |config|
   config.developer_public_key = ENV['TRELLO_DEVELOPER_PUBLIC_KEY']
@@ -11,11 +10,15 @@ Trello.configure do |config|
 end
 
 class TrelloNewsletter
+  def board_name
+    "CodeNewbie Newsletter"
+  end
+
+  def board
+    Trello::Board.all.find { |b| b.name == board_name }
+  end
+
   def generate
-    boards = Trello::Board.all
-    puts boards.count
-    board_name = "CodeNewbie Newsletter"
-    board = Trello::Board.all.find { |b| b.name == board_name }
     lists = board.lists
 
     meta_list = lists.select { |n| n.attributes[:name] == "Meta" }.first
