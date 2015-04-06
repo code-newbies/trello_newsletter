@@ -512,7 +512,7 @@ class TrelloNewsletter
   # https://apidocs.mailchimp.com/api/2.0/campaigns/create.php
   # https://apidocs.mailchimp.com/api/2.0/lists/list.php
   def export_to_mailchimp
-    mailchimp = Mailchimp::API.new(MAILCHIMP-API-KEY)
+    mailchimp = Mailchimp::API.new(ENV['MAILCHIMP_KEY'])
     all_lists = mailchimp.lists.list
     from_website_list = all_lists.select { |n| n.attributes['data']['name'] == "From Website" }
     # Zip index.html and css
