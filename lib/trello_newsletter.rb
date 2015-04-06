@@ -3,6 +3,7 @@ require_relative "meta.rb"
 require_relative "post.rb"
 require "trello"
 require "mailchimp"
+require "zip"
 
 Trello.configure do |config|
   config.developer_public_key = ENV['TRELLO_DEVELOPER_PUBLIC_KEY']
@@ -26,8 +27,17 @@ class TrelloNewsletter
 
     headlines_list = lists.select { |n| n.attributes[:name] == "Headlines" }.first
     html_output(meta, headlines_list)
+    puts "zippity zip zip"
+    zip_output
     puts "Finished generating issue"
   end
+
+  def zip_output # It would be nice to pass in a filename rather than hardcoding it
+    Zip::File.open("newsletter_html.zip", Zip::File::CREATE) do |zip|
+      zip.add("index.html", "./index.html")
+    end
+  end
+
 
   def html_output(meta, headlines_list)
     template = File.open("index.html", "w")
