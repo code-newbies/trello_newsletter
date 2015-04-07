@@ -1,8 +1,11 @@
 require_relative "trello_newsletter/version"
 require_relative "meta.rb"
 require_relative "post.rb"
+#require "pry"
 require "trello"
-require "mailchimp"
+require "gibbon"
+require "zip"
+require "base64"
 
 Trello.configure do |config|
   config.developer_public_key = ENV['TRELLO_DEVELOPER_PUBLIC_KEY']
@@ -26,8 +29,19 @@ class TrelloNewsletter
 
     headlines_list = lists.select { |n| n.attributes[:name] == "Headlines" }.first
     html_output(meta, headlines_list)
+    puts "zippity zip zip"
+    zip_output
     puts "Finished generating issue"
   end
+
+  def zip_output # It would be nice to pass in a filename rather than hardcoding it
+    # This tells zip to overwrite the zip
+    Zip.continue_on_exists_proc = true # Should put this in a configuration file.
+    Zip::File.open("newsletter_html.zip", Zip::File::CREATE) do |zip|
+      zip.add("index.html", "./index.html")
+    end
+  end
+
 
   def html_output(meta, headlines_list)
     template = File.open("index.html", "w")
@@ -512,17 +526,25 @@ class TrelloNewsletter
   # https://apidocs.mailchimp.com/api/2.0/campaigns/create.php
   # https://apidocs.mailchimp.com/api/2.0/lists/list.php
   def export_to_mailchimp
-    mailchimp = Mailchimp::API.new(MAILCHIMP-API-KEY)
-    all_lists = mailchimp.lists.list
-    from_website_list = all_lists.select { |n| n.attributes['data']['name'] == "From Website" }
-    # Zip index.html and css
-    # create new mailchimp campaign and import the zip folder to it.
-    # Line 1539 in Mailchimp api gem source code
-    # Everything in the tracking option defaults to true except text clicks.
-    mailchimp.campaigns.create("regular", {list_id: from_website_list, subject: "Subject line", 
-                                           from_email: "hello@codenewbie.org", from_name: "#CodeNewbie", to_name: "*|FNAME|*",
-                                            tracking: {text_clicks: true}},
-
-                                           {archive: "archive name", archive_type: "zip"})
-  end 
+    gb = Gibbon::API.new(ENV['MAILCHIMP_KEY'])
+    recipient_list = gb.lists.list({:filters => {:list_name => "From Website"}})
+    list_id = recipient_list['data'].first['id']
+    zipfile = File.open("newsletter_html.zip", "r") { |fp| fp.read }
+#    binding.pry
+    begin
+      gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: "ZIP NEWSLETTER", 
+                                                    from_email: "hello@codenewbie.org", from_name: "#CodeNewbie", 
+                                                    generate_text: true, inline_css: true}, 
+                                                    content: {archive:Base64.encode64(zipfile) , archive_type: "zip"}})
+    rescue Gibbon::MailChimpError => e
+      puts "The zip file upload errored: #{e.message}"
+      puts "Try to upload contents of index.html"
+      file = File.open("index.html", "r")
+      contents = file.read
+      gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: "Trello Newsletter", 
+                                                    from_email: "hello@codenewbie.org", from_name: "#CodeNewbie", 
+                                                    generate_text: true, inline_css: true}, 
+                                                    content: {html: contents}})
+    end
+  end
 end
