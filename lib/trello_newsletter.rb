@@ -523,13 +523,14 @@ class TrelloNewsletter
   # https://apidocs.mailchimp.com/api/2.0/campaigns/create.php
   # https://apidocs.mailchimp.com/api/2.0/lists/list.php
   def export_to_mailchimp
+    email_subject = "The Not Bootcamp"
     gb = Gibbon::API.new(ENV['MAILCHIMP_KEY'])
     recipient_list = gb.lists.list({:filters => {:list_name => "From Website"}})
     list_id = recipient_list['data'].first['id']
     zipfile = File.open("newsletter_html.zip", "r") { |fp| fp.read }
 #    binding.pry
     begin
-      gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: "ZIP NEWSLETTER", 
+      gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: email_subject, 
                                                     from_email: "hello@codenewbie.org", from_name: "#CodeNewbie", 
                                                     generate_text: true, inline_css: true}, 
                                                     content: {archive:Base64.encode64(zipfile) , archive_type: "zip"}})
@@ -538,7 +539,7 @@ class TrelloNewsletter
       puts "Try to upload contents of index.html"
       file = File.open("index.html", "r")
       contents = file.read
-      gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: "Trello Newsletter", 
+      gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: email_subject, 
                                                     from_email: "hello@codenewbie.org", from_name: "#CodeNewbie", 
                                                     generate_text: true, inline_css: true}, 
                                                     content: {html: contents}})
