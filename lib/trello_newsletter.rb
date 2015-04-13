@@ -78,7 +78,7 @@ class TrelloNewsletter
           * @theme page
           */
           body, #backgroundTable{
-            /*@editable*/ background-color:#FAFAFA;
+            /*@editable*/ background-color:#F2F2F2;
           }
 
           /**
@@ -87,7 +87,8 @@ class TrelloNewsletter
           * @tip Set the border for your email.
           */
           #templateContainer{
-            /*@editable*/ border: 1px solid #DDDDDD;
+            /*@editable*/ /*border: 1px solid #DDDDDD*/;
+            border: 0;
           }
 
           /**
@@ -97,15 +98,15 @@ class TrelloNewsletter
           * @style heading 1
           */
           h1, .h1{
-            /*@editable*/ color:#202020;
+            /*@editable*/ color:#606060;
             display:block;
-            /*@editable*/ font-family:Arial;
-            /*@editable*/ font-size:34px;
+            /*@editable*/ font-family:Helvetica;
+            /*@editable*/ font-size:15px;
             /*@editable*/ font-weight:bold;
-            /*@editable*/ line-height:100%;
+            /*@editable*/ line-height:150%;
             margin-top:0;
             margin-right:0;
-            margin-bottom:10px;
+            margin-bottom:0;
             margin-left:0;
             /*@editable*/ text-align:left;
           }
@@ -179,7 +180,7 @@ class TrelloNewsletter
           * @theme page
           */
           #templatePreheader{
-            /*@editable*/ background-color:#FAFAFA;
+            /*@editable*/ background-color:#FFFFFF;
           }
 
           /**
@@ -269,8 +270,9 @@ class TrelloNewsletter
           * @theme main
           */
           .bodyContent div{
-            /*@editable*/ color:#505050;
-            /*@editable*/ font-family:Arial;
+            padding: 0 12%;
+            /*@editable*/ color:#606060;
+            /*@editable*/ font-family:Helvetica;
             /*@editable*/ font-size:14px;
             /*@editable*/ line-height:150%;
             /*@editable*/ text-align:left;
@@ -282,7 +284,7 @@ class TrelloNewsletter
           * @tip Set the styling for your email's main content links. Choose a color that helps them stand out from your text.
           */
           .bodyContent div a:link, .bodyContent div a:visited, /* Yahoo! Mail Override */ .bodyContent div a .yshortcuts /* Yahoo! Mail Override */{
-            /*@editable*/ color:#336699;
+            /*@editable*/ color:#6DC6DD;
             /*@editable*/ font-weight:normal;
             /*@editable*/ text-decoration:underline;
           }
@@ -303,6 +305,7 @@ class TrelloNewsletter
           #templateFooter{
             /*@editable*/ background-color:#FFFFFF;
             /*@editable*/ border-top:0;
+            /*@editable*/ border-bottom:0;
           }
 
           /**
@@ -312,9 +315,9 @@ class TrelloNewsletter
           * @theme footer
           */
           .footerContent div{
-            /*@editable*/ color:#707070;
-            /*@editable*/ font-family:Arial;
-            /*@editable*/ font-size:12px;
+            /*@editable*/ color:#606060;
+            /*@editable*/ font-family:Helvetica;
+            /*@editable*/ font-size:11px;
             /*@editable*/ line-height:125%;
             /*@editable*/ text-align:left;
           }
@@ -325,7 +328,7 @@ class TrelloNewsletter
           * @tip Set the styling for your email's footer links. Choose a color that helps them stand out from your text.
           */
           .footerContent div a:link, .footerContent div a:visited, /* Yahoo! Mail Override */ .footerContent div a .yshortcuts /* Yahoo! Mail Override */{
-            /*@editable*/ color:#336699;
+            /*@editable*/ color:#606060;
             /*@editable*/ font-weight:normal;
             /*@editable*/ text-decoration:underline;
           }
@@ -441,21 +444,15 @@ class TrelloNewsletter
                                 
                                                 <!-- // Begin Module: Standard Content \\ -->
                                                 <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                                                  <tr>
+                                                    <td valign"top">
+                                                      <div>
     DOC
     headlines_list.cards.each do |card|
       post = Post.new(card)
-      template.puts "   <tr>"
-      template.puts "   <td valign=\"top\">"
-      template.puts "   <div>"
-      template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
+      template.puts "    <h1 class=\"h1\">#{post.title}</h1>"
       template.puts "    #{post.body}"
-      template.puts "   </div>"
-      template.puts "   </td>"
-      template.puts "   </tr>"
     end
-    template.puts "   <tr>"
-    template.puts "   <td valign=\"top\">"
-    template.puts "   <div>"
     template.puts "    #{meta.outro_text}"
     template.puts "   </div>"
     template.puts "   </td>"
@@ -482,7 +479,7 @@ class TrelloNewsletter
                                                       <tr>
                                                           <td colspan="2" valign="middle" id="social">
                                                               <div mc:edit="std_social">
-                                                                  &nbsp;<a href="*|TWITTER:PROFILEURL|*">follow on Twitter</a> | <a href="*|FORWARD|*">forward to a friend</a>&nbsp;
+                                                                  &nbsp;<a href="*|TWITTER:PROFILEURL|*">Follow us @CodeNewbie</a> | <a href="*|FORWARD|*">forward to a friend</a> | <a href="http://codenewbie.org/">Visit us at www.codenewbie.org</a> | <a href="mailto:hello@codenewbie.org"> Email Us </a>&nbsp;
                                                               </div>
                                                           </td>
                                                       </tr>
@@ -526,13 +523,14 @@ class TrelloNewsletter
   # https://apidocs.mailchimp.com/api/2.0/campaigns/create.php
   # https://apidocs.mailchimp.com/api/2.0/lists/list.php
   def export_to_mailchimp
+    email_subject = "The Not Bootcamp"
     gb = Gibbon::API.new(ENV['MAILCHIMP_KEY'])
     recipient_list = gb.lists.list({:filters => {:list_name => "From Website"}})
     list_id = recipient_list['data'].first['id']
     zipfile = File.open("newsletter_html.zip", "r") { |fp| fp.read }
 #    binding.pry
     begin
-      gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: "ZIP NEWSLETTER", 
+      gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: email_subject, 
                                                     from_email: "hello@codenewbie.org", from_name: "#CodeNewbie", 
                                                     generate_text: true, inline_css: true}, 
                                                     content: {archive:Base64.encode64(zipfile) , archive_type: "zip"}})
@@ -541,7 +539,7 @@ class TrelloNewsletter
       puts "Try to upload contents of index.html"
       file = File.open("index.html", "r")
       contents = file.read
-      gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: "Trello Newsletter", 
+      gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: email_subject, 
                                                     from_email: "hello@codenewbie.org", from_name: "#CodeNewbie", 
                                                     generate_text: true, inline_css: true}, 
                                                     content: {html: contents}})
