@@ -1,15 +1,15 @@
 require "bundler/gem_tasks"
+require "pry"
 require_relative "lib/trello_newsletter"
 
 # http://bundler.io/bundler_setup.html
 Bundler.setup
 
+# Setup objects
+@newsletter = TrelloNewsletter.new
 desc "Generate HTML from Trello board"
 task :generate do
-  TrelloNewsletter.new.generate
-end
-
-desc "Create new mailchimp campaign from HTML and CSS zip folder"
-task :create_campaign do
-  TrelloNewsletter.new.export_to_mailchimp
+  @newsletter.generate
+  @email_subject = @newsletter.newsletter_title
+  @newsletter.export_to_mailchimp(@email_subject)
 end
