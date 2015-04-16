@@ -39,6 +39,9 @@ class TrelloNewsletter
     Zip.continue_on_exists_proc = true # Should put this in a configuration file.
     Zip::File.open("newsletter_html.zip", Zip::File::CREATE) do |zip|
       zip.add("index.html", "./index.html")
+      if File.exists?("header_image.png")
+        zip.add("header_image.png", "./header_image.png")
+      end
     end
   end
 
@@ -523,7 +526,7 @@ class TrelloNewsletter
   # https://apidocs.mailchimp.com/api/2.0/campaigns/create.php
   # https://apidocs.mailchimp.com/api/2.0/lists/list.php
   def export_to_mailchimp
-    email_subject = "The Not Bootcamp"
+    email_subject = "Testing image header"
     gb = Gibbon::API.new(ENV['MAILCHIMP_KEY'])
     recipient_list = gb.lists.list({:filters => {:list_name => "From Website"}})
     list_id = recipient_list['data'].first['id']
