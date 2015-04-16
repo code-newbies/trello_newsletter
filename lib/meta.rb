@@ -6,9 +6,10 @@ class Meta
   end 
 
   def header_image
-    text = find_card("Header Image").desc
+#    text = find_card("Header Image").desc
     # removing the tags because we just want the link
-    md_to_html(text).gsub("\n<p>","").gsub("</p>\n","")
+#    md_to_html(text).gsub("\n<p>","").gsub("</p>\n","")
+    header_image = "header_image.png"
   end
 
   def published_at
