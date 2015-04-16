@@ -12,6 +12,12 @@ class Meta
     header_image = "header_image.png"
   end
 
+  def title
+    text = find_card("Title").desc
+    # I don't want the tags because I'm using the title to name the campaign
+    md_to_html(text).gsub("\n<p>","").gsub("</p>\n","")
+  end
+
   def published_at
     find_card("Date").name
     #find_card("Date").desc
