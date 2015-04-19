@@ -1,35 +1,54 @@
 # TrelloNewsletter
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/trello_newsletter`. To experiment with that code, run `bin/console` for an interactive prompt.
+The Trello Newsletter gem is inspired by the Changelog's *[Trello as a CMS](https://thechangelog.com/trello-as-a-cms/)* blog post.
+The gem converts cards in a Trello board into a HTML newsletter which is sent to Mailchimp ready to be sent out.
 
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'trello_newsletter'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install trello_newsletter
+It's currently specific to Code Newbie but there will be steps to make it more accessible to everyone.
 
 ## Usage
 
-TODO: Write usage instructions here
+Before we can begin, clone the gem into your directory. Next is setting up your environment variables.
+Your environment variables will store your secret API key's. We need two sets of API key's to get this working; Trello and 
+Mailchimp.
 
-## Development
+#### Trello key
+We use the [ruby-trello](https://github.com/jeremytregunna/ruby-trello) gem and these instructions are appropriated from
+that project.
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
+1. Get your api key from [trello.com/app-key](https://trello.com/app-key). Set it as environment variable 'TRELLO_DEVELOPER_PUBLIC_KEY'.
+To do this enter this command in your terminal:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+`export TRELLO_DEVELOPER_PUBLIC_KEY=trello.com/app-key`
 
+To make sure that this is loaded every time you start a new terminal session. You can place this command in ~/.profile.
+
+2. Get your member token by visiting this url: `https://trello.com/1/authorize?key=YOURAPIKEY&response_type=token&expiration=never`
+  - key: Your api key, the key that you got from step one.
+  - response_type: 'token'
+  - expiration: 'never' if you want your token to never expire (which is what we want). If you leave this blank the token
+      generated will expire in 30 days.
+
+Set the member token to an environment variable called 'TRELLO_MEMBER_TOKEN' using the process in step 1.
+
+#### Mailchimp key
+
+1. Navigate to 'account settings' in Mailchimp.
+2. Under 'Extras' menu there is an 'Api Keys' option.
+3. On that page under the 'Your API keys' heading you have an option to create a new key. Set the key value generated to an environment
+variable named 'MAILCHIMP_KEY'.
+
+#### Generating the newsletter
+
+Once we have both the Mailchimp and Trello Api keys we can go ahead and generate the newsletter.
+
+1. `bundle install` to install any dependencies.
+2. Run `rake generate`.
+
+This rake task will do two things:
+1. Generate your email HTML file using information from the Trello board.
+2. Zip the file (and a header_image.png if included) and then send it to Mailchimp.
+
+After running `rake generate` check Mailchimp to make sure the newsletter looks right and then schedule for it to be sent out!
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/trello_newsletter/fork )
