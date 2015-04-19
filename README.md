@@ -7,7 +7,7 @@ It's currently specific to Code Newbie but there will be steps to make it more a
 
 ## Usage
 
-#### <a name="setup"></a>Setup 
+#### <a name="install"></a>Installation
 Before we can begin, clone the gem into your directory, with ssh: 
 
 `$ git clone git@github.com:code-newbies/trello_newsletter.git`
@@ -55,7 +55,7 @@ Again to make sure that this key is loaded every time you start a new terminal s
 
 Once we have both the Mailchimp and Trello Api keys we can go ahead and generate the newsletter.
 
-1. Navigate to the `Trello_newsletter` project, which you would have cloned in the [earlier step](#setup).
+1. Navigate to the `Trello_newsletter` project, which you would have cloned in the [earlier step](#install).
 2. `bundle install` to install any dependencies.
 3. Run `rake generate`.
 
