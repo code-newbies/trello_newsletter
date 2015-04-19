@@ -7,9 +7,13 @@ It's currently specific to Code Newbie but there will be steps to make it more a
 
 ## Usage
 
-Before we can begin, clone the gem into your directory: 
+Before we can begin, clone the gem into your directory, with ssh: 
 
 `git clone git@github.com:code-newbies/trello_newsletter.git`
+
+Or clone the gem, without ssh (you'll need to enter in your GitHub login details):
+
+`git clone https://github.com/code-newbies/trello_newsletter.git`
 
 Next is setting up your environment variables. Your environment variables will store your secret API key's. 
 We need two sets of API key's to get this working; Trello and Mailchimp.
@@ -21,7 +25,7 @@ that project.
 1. Get your api key from [trello.com/app-key](https://trello.com/app-key). Set it as environment variable 'TRELLO_DEVELOPER_PUBLIC_KEY'.
 To do this enter this command in your terminal:
 
-`export TRELLO_DEVELOPER_PUBLIC_KEY=trello.com/app-key`
+`export TRELLO_DEVELOPER_PUBLIC_KEY=your_generated_api_key`
 
 To make sure that this is loaded every time you start a new terminal session. You can place this command in ~/.profile.
 
@@ -48,13 +52,14 @@ Once we have both the Mailchimp and Trello Api keys we can go ahead and generate
 2. Run `rake generate`.
 
 This rake task will do two things:
+
 1. Generate your email HTML file using information from the Trello board.
 2. Zip the file (and a header_image.png if included) and then send it to Mailchimp.
 
 After running `rake generate` check Mailchimp to make sure the newsletter looks right and then schedule for it to be sent out!
 ## Contributing
 
-1. Fork it by pressing that awesome fork button: <iframe src="https://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=fork&count=true&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>
+1. Fork it by pressing that GitHub fork button at the top of the page. 
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
