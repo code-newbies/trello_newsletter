@@ -6,14 +6,26 @@ class Meta
   end 
 
   def header_image
-    text = find_card("Header Image").desc
+#    text = find_card("Header Image").desc
     # removing the tags because we just want the link
+#    md_to_html(text).gsub("\n<p>","").gsub("</p>\n","")
+    header_image = "header_image.png"
+  end
+
+  def title
+    text = find_card("Title").desc
+    # I don't want the tags because I'm using the title to name the campaign
     md_to_html(text).gsub("\n<p>","").gsub("</p>\n","")
   end
 
   def published_at
     find_card("Date").name
     #find_card("Date").desc
+  end
+
+  def preview_text
+    text = find_card("Preview").desc
+    md_to_html(text)
   end
 
   def intro_text

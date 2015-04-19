@@ -9,3 +9,5 @@
 /tmp/
 *.html
 *.zip
+spec/fixtures/*
+*.png
