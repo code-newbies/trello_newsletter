@@ -27,11 +27,16 @@ class TrelloNewsletter
     meta_list = lists.select { |n| n.attributes[:name] == "Meta" }.first
     meta = Meta.new(meta_list)
 
+    @title = meta.title
     headlines_list = lists.select { |n| n.attributes[:name] == "Headlines" }.first
     html_output(meta, headlines_list)
     puts "zippity zip zip"
     zip_output
     puts "Finished generating issue"
+  end
+
+  def newsletter_title
+    @title
   end
 
   def zip_output # It would be nice to pass in a filename rather than hardcoding it
@@ -221,6 +226,11 @@ class TrelloNewsletter
           #templateHeader{
             /*@editable*/ background-color:#FFFFFF;
             /*@editable*/ border-bottom:0;
+          }
+
+          .title_text {
+            font-size:30px; 
+            text-align: center;
           }
 
           /**
@@ -427,9 +437,16 @@ class TrelloNewsletter
                                   <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
                                         <tr>
                                             <td class="headerContent">
-                                            
                                               <!-- // Begin Module: Standard Header Image \\ -->
+    DOC
+    if File.exists?(meta.header_image)
+      template.puts <<-DOC
                                               <img src="#{meta.header_image}" style="max-width:600px;" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext />
+      DOC
+    else
+      template.puts "      <h1 style=\"font-size:30px; text-align: center;\">#{meta.title}</h1>"
+    end
+    template.puts <<-DOC
                                               <!-- // End Module: Standard Header Image \\ -->
                                             
                                             </td>
@@ -525,8 +542,7 @@ class TrelloNewsletter
 
   # https://apidocs.mailchimp.com/api/2.0/campaigns/create.php
   # https://apidocs.mailchimp.com/api/2.0/lists/list.php
-  def export_to_mailchimp
-    email_subject = "Testing image header"
+  def export_to_mailchimp(email_subject)
     gb = Gibbon::API.new(ENV['MAILCHIMP_KEY'])
     recipient_list = gb.lists.list({:filters => {:list_name => "From Website"}})
     list_id = recipient_list['data'].first['id']
