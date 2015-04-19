@@ -51,7 +51,7 @@ Set the member token to an environment variable called 'TRELLO_MEMBER_TOKEN' usi
 
 Again to make sure that this key is loaded every time you start a new terminal session. You can place this command in `~/.profile` or `~/.bash_profile`.
 
-#### Generate the newsletter
+#### Generate newsletter
 
 Once we have both the Mailchimp and Trello Api keys we can go ahead and generate the newsletter.
 
