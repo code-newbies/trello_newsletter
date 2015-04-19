@@ -42,7 +42,9 @@ Set the member token to an environment variable called 'TRELLO_MEMBER_TOKEN' usi
 1. Navigate to 'account settings' in Mailchimp.
 2. Under 'Extras' menu there is an 'Api Keys' option.
 3. On that page under the 'Your API keys' heading you have an option to create a new key. Set the key value generated to an environment
-variable named 'MAILCHIMP_KEY'.
+variable named 'MAILCHIMP_KEY'. Like with the Trello key, enter this command in your terminal:
+
+`export MAILCHIMP_KEY=YOURAPIKEY`
 
 #### Generating the newsletter
 
