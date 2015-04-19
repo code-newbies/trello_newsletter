@@ -7,19 +7,21 @@ It's currently specific to Code Newbie but there will be steps to make it more a
 
 ## Usage
 
-#### <a name="install"></a>Installation
-Before we can begin, clone the gem into your directory, with ssh: 
+#### <a name="install"></a>Install Gem
+Clone the gem into your directory, with ssh: 
 
 `$ git clone git@github.com:code-newbies/trello_newsletter.git`
 
-Or clone the gem, without ssh (you'll need to enter in your GitHub login details):
+Or without ssh (you'll need to enter in your GitHub login details):
 
 `$ git clone https://github.com/code-newbies/trello_newsletter.git`
 
 Next is setting up your environment variables. Your environment variables will store your secret API key's. 
 We need two sets of API key's to get this working; Trello and Mailchimp.
 
-#### Trello key
+#### Set API Keys
+
+##### Trello key
 We use the [ruby-trello](https://github.com/jeremytregunna/ruby-trello) gem and these instructions are appropriated from
 that project.
 
@@ -27,11 +29,11 @@ that project.
 2. Get your api key from [trello.com/app-key](https://trello.com/app-key). Set it as environment variable 'TRELLO_DEVELOPER_PUBLIC_KEY'.
 To do this enter this command in your terminal:
 
-`$ export TRELLO_DEVELOPER_PUBLIC_KEY=YOURAPIKEY`
+  `$ export TRELLO_DEVELOPER_PUBLIC_KEY=YOURAPIKEY`
 
-To make sure that this is loaded every time you start a new terminal session. You can place this command in `~/.profile` or `~/.bash_profile`.
+3. (optional) To make sure that this is loaded every time you start a new terminal session. You can place this command in `~/.profile` or `~/.bash_profile`.
 
-3. Get your member token by visiting this url: `https://trello.com/1/authorize?key=YOURAPIKEY&response_type=token&expiration=never`
+4. Get your member token by visiting this url: `https://trello.com/1/authorize?key=YOURAPIKEY&response_type=token&expiration=never`
   - key: Your api key, the key that you got from step one.
   - response_type: 'token'
   - expiration: 'never' if you want your token to never expire (which is what we want). If you leave this blank the token
@@ -39,19 +41,18 @@ To make sure that this is loaded every time you start a new terminal session. Yo
 
 Set the member token to an environment variable called 'TRELLO_MEMBER_TOKEN' using the process in step 1.
 
-#### Mailchimp key
+##### Mailchimp key
 
 1. Login to Mailchimp.
 2. Navigate to 'account settings' in Mailchimp.
 3. Under 'Extras' menu there is an 'Api Keys' option.
-4. On that page under the 'Your API keys' heading you have an option to create a new key. Set the key value generated to an environment
-variable named 'MAILCHIMP_KEY'. Like with the Trello key, enter this command in your terminal:
+4. On that page under the 'Your API keys' heading you have an option to create a new key. Set the key value generated to an environment variable named 'MAILCHIMP_KEY'. Like with the Trello key, enter this command in your terminal:
 
 `$ export MAILCHIMP_KEY=YOURAPIKEY`
 
 Again to make sure that this key is loaded every time you start a new terminal session. You can place this command in `~/.profile` or `~/.bash_profile`.
 
-#### Generating the newsletter
+#### Generate the newsletter
 
 Once we have both the Mailchimp and Trello Api keys we can go ahead and generate the newsletter.
 
@@ -61,8 +62,8 @@ Once we have both the Mailchimp and Trello Api keys we can go ahead and generate
 
 This rake task will do two things:
 
-1. Generate your email HTML file using information from the Trello board. This zip file will be placed in your project root folder.
-2. Zip the file (and a header_image.png if included) and then send it to Mailchimp.
+- Generate your email HTML file using information from the Trello board. This zip file will be placed in your project root folder.
+- Zip the file (and a header_image.png if included) and then send it to Mailchimp.
 
 To see the newsletter in Mailchimp:
 
