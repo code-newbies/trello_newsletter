@@ -16,10 +16,9 @@ Or without ssh (you'll need to enter in your GitHub login details):
 
 `$ git clone https://github.com/code-newbies/trello_newsletter.git`
 
+#### Set API Keys
 Next is setting up your environment variables. Your environment variables will store your secret API key's. 
 We need two sets of API key's to get this working; Trello and Mailchimp.
-
-#### Set API Keys
 
 ##### Trello key
 We use the [ruby-trello](https://github.com/jeremytregunna/ruby-trello) gem and these instructions are appropriated from
