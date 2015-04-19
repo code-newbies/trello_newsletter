@@ -7,9 +7,12 @@ It's currently specific to Code Newbie but there will be steps to make it more a
 
 ## Usage
 
-Before we can begin, clone the gem into your directory. Next is setting up your environment variables.
-Your environment variables will store your secret API key's. We need two sets of API key's to get this working; Trello and 
-Mailchimp.
+Before we can begin, clone the gem into your directory: 
+
+`git clone git@github.com:code-newbies/trello_newsletter.git`
+
+Next is setting up your environment variables. Your environment variables will store your secret API key's. 
+We need two sets of API key's to get this working; Trello and Mailchimp.
 
 #### Trello key
 We use the [ruby-trello](https://github.com/jeremytregunna/ruby-trello) gem and these instructions are appropriated from
