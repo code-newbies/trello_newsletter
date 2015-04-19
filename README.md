@@ -54,7 +54,7 @@ This rake task will do two things:
 After running `rake generate` check Mailchimp to make sure the newsletter looks right and then schedule for it to be sent out!
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/trello_newsletter/fork )
+1. Fork it by pressing that awesome fork button: <iframe src="https://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=fork&count=true&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
