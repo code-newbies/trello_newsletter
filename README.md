@@ -7,6 +7,12 @@ It's currently specific to Code Newbie but there will be steps to make it more a
 
 ## Usage
 
+#### Required gems
+This project will need the [bundler gem](http://bundler.io/) installed. 
+To install bundler, copy the following command into terminal:
+
+`$ gem install bundler`
+
 #### <a name="install"></a>Install Gem
 Clone the gem into your directory, with ssh: 
 
@@ -25,7 +31,8 @@ We use the [ruby-trello](https://github.com/jeremytregunna/ruby-trello) gem and 
 that project.
 
 1. Login to your Trello account.
-2. Get your api key from [trello.com/app-key](https://trello.com/app-key). Set it as environment variable 'TRELLO_DEVELOPER_PUBLIC_KEY'.
+2. Get your api key from [trello.com/app-key](https://trello.com/app-key). Click 'allow' when you get to this page. 
+Set it as environment variable 'TRELLO_DEVELOPER_PUBLIC_KEY'.
 To do this enter this command in your terminal:
 
   `$ export TRELLO_DEVELOPER_PUBLIC_KEY=YOURAPIKEY`
@@ -39,7 +46,7 @@ To make sure that this is loaded every time you start a new terminal session. Yo
 This will output all your environment variables that you have set. Just search for `TRELLO_DEVELOPER_PUBLIC_KEY` to make sure that it is all set.
 
 4. Get your member token by visiting this url: `https://trello.com/1/authorize?key=YOURAPIKEY&response_type=token&expiration=never`
-  - key: Your api key, the key that you got from step one.
+  - key: Your api key, copy and paste the key you got above.
   - response_type: 'token'
   - expiration: 'never' if you want your token to never expire (which is what we want). If you leave this blank the token
       generated will expire in 30 days.
@@ -49,7 +56,7 @@ Set the member token to an environment variable called 'TRELLO_MEMBER_TOKEN' usi
 ##### Mailchimp key
 
 1. Login to Mailchimp.
-2. Navigate to 'account settings' in Mailchimp.
+2. Navigate to 'Account' >> 'Extras' in Mailchimp.
 3. Under 'Extras' menu there is an 'Api Keys' option.
 4. On that page under the 'Your API keys' heading you have an option to create a new key. Set the key value generated to an environment variable named 'MAILCHIMP_KEY'. Like with the Trello key, enter this command in your terminal:
 
