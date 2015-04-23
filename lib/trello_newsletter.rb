@@ -438,15 +438,7 @@ class TrelloNewsletter
                                         <tr>
                                             <td class="headerContent">
                                               <!-- // Begin Module: Standard Header Image \\ -->
-    DOC
-    if File.exists?(meta.header_image)
-      template.puts <<-DOC
                                               <img src="#{meta.header_image}" style="max-width:600px;" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext />
-      DOC
-    else
-      template.puts "      <h1 style=\"font-size:30px; text-align: center;\">#{meta.title}</h1>"
-    end
-    template.puts <<-DOC
                                               <!-- // End Module: Standard Header Image \\ -->
                                             
                                             </td>

@@ -6,10 +6,13 @@ class Meta
   end 
 
   def header_image
-#    text = find_card("Header Image").desc
-    # removing the tags because we just want the link
-#    md_to_html(text).gsub("\n<p>","").gsub("</p>\n","")
     header_image = "header_image.png"
+    if !File.exists?(header_image)
+      text = find_card("Header Image").desc
+      # removing the tags because we just want the link
+      header_image = md_to_html(text).gsub("\n<p>","").gsub("</p>\n","")
+    end
+    header_image
   end
 
   def title
