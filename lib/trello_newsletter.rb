@@ -89,12 +89,17 @@ class TrelloNewsletter
             /*@editable*/ background-color:#F2F2F2;
           }
 
+          #templateBody {
+            width: 600px;
+          }
+
           /**
           * @tab Page
           * @section email border
           * @tip Set the border for your email.
           */
           #templateContainer{
+            width: 600px;
             /*@editable*/ /*border: 1px solid #DDDDDD*/;
             border: 0;
           }
@@ -188,6 +193,7 @@ class TrelloNewsletter
           * @theme page
           */
           #templatePreheader{
+            width: 600px;
             /*@editable*/ background-color:#FFFFFF;
           }
 
@@ -224,6 +230,7 @@ class TrelloNewsletter
           * @theme header
           */
           #templateHeader{
+            width: 600px;
             /*@editable*/ background-color:#FFFFFF;
             /*@editable*/ border-bottom:0;
           }
@@ -276,6 +283,8 @@ class TrelloNewsletter
             /*@editable*/ background-color:#FFFFFF;
           }
 
+          
+
           /**
           * @tab Body
           * @section body text
@@ -316,6 +325,7 @@ class TrelloNewsletter
           * @theme footer
           */
           #templateFooter{
+            width: 600px;
             /*@editable*/ background-color:#FFFFFF;
             /*@editable*/ border-top:0;
             /*@editable*/ border-bottom:0;
@@ -393,6 +403,116 @@ class TrelloNewsletter
           #monkeyRewards img{
             max-width:190px;
           }
+
+          /* /\/\/\/\/\/\/\/\/ MOBILE STYLES /\/\/\/\/\/\/\/\/ */
+
+            @media only screen and (max-width: 480px){
+
+              /* /\/\/\/\/\/\/ CLIENT-SPECIFIC MOBILE STYLES /\/\/\/\/\/\/ */
+              body, table, td, p, a, li, blockquote{-webkit-text-size-adjust:none !important;} /* Prevent Webkit platforms from changing default text sizes */
+                      body{width:100% !important; min-width:100% !important;} /* Prevent iOS Mail from adding padding to the body */
+              /* /\/\/\/\/\/\/ MOBILE RESET STYLES /\/\/\/\/\/\/ */
+              #bodyCell{padding:10px !important;}
+              /* /\/\/\/\/\/\/ MOBILE TEMPLATE STYLES /\/\/\/\/\/\/ */
+              /* ======== Page Styles ======== */
+              /**
+              * @tab Mobile Styles
+              * @section template width
+              * @tip Make the template fluid for portrait or landscape view adaptability. If a fluid layout doesn't work for you, set the width to 300px instead.
+              */
+              #templateContainer{
+                max-width:300px !important;
+                /*@editable*/ width:100% !important;
+              }
+              /**
+              * @tab Mobile Styles
+              * @section heading 1
+              * @tip Make the first-level headings larger in size for better readability on small screens.
+              */
+              h1{
+                /*@editable*/ font-size:24px !important;
+                /*@editable*/ line-height:100% !important;
+              }
+              /**
+              * @tab Mobile Styles
+              * @section heading 2
+              * @tip Make the second-level headings larger in size for better readability on small screens.
+              */
+              h2{
+                /*@editable*/ font-size:20px !important;
+                /*@editable*/ line-height:100% !important;
+              }
+              /**
+              * @tab Mobile Styles
+              * @section heading 3
+              * @tip Make the third-level headings larger in size for better readability on small screens.
+              */
+              h3{
+                /*@editable*/ font-size:18px !important;
+                /*@editable*/ line-height:100% !important;
+              }
+              /**
+              * @tab Mobile Styles
+              * @section heading 4
+              * @tip Make the fourth-level headings larger in size for better readability on small screens.
+              */
+              h4{
+                /*@editable*/ font-size:16px !important;
+                /*@editable*/ line-height:100% !important;
+              }
+              /* ======== Header Styles ======== */
+              #templatePreheader{display:none !important;} /* Hide the template preheader to save space */
+              /**
+              * @tab Mobile Styles
+              * @section header image
+              * @tip Make the main header image fluid for portrait or landscape view adaptability, and set the image's original width as the max-width. If a fluid setting doesn't work, set the image width to half its original size instead.
+              */
+              #headerImage{
+                height:auto !important;
+                /*@editable*/ max-width:300px !important;
+                /*@editable*/ width:100% !important;
+              }
+              /**
+              * @tab Mobile Styles
+              * @section header text
+              * @tip Make the header content text larger in size for better readability on small screens. We recommend a font size of at least 16px.
+              */
+              .headerContent{
+                /*@editable*/ font-size:20px !important;
+                /*@editable*/ line-height:125% !important;
+              }
+              /* ======== Body Styles ======== */
+              /**
+              * @tab Mobile Styles
+              * @section body image
+              * @tip Make the main body image fluid for portrait or landscape view adaptability, and set the image's original width as the max-width. If a fluid setting doesn't work, set the image width to half its original size instead.
+              */
+              #bodyImage{
+                height:auto !important;
+                /*@editable*/ max-width:280px !important;
+                /*@editable*/ width:100% !important;
+              }
+              /**
+              * @tab Mobile Styles
+              * @section body text
+              * @tip Make the body content text larger in size for better readability on small screens. We recommend a font size of at least 16px.
+              */
+              .bodyContent{
+                /*@editable*/ font-size:18px !important;
+                /*@editable*/ line-height:125% !important;
+              }
+              /* ======== Footer Styles ======== */
+              /**
+              * @tab Mobile Styles
+              * @section footer text
+              * @tip Make the body content text larger in size for better readability on small screens.
+              */
+              .footerContent{
+                /*@editable*/ font-size:14px !important;
+                /*@editable*/ line-height:115% !important;
+              }
+              .footerContent a{display:block !important;} /* Place footer social and utility links on their own lines, for easier access */
+          }
         </style>
       </head>
     DOC
@@ -403,7 +523,7 @@ class TrelloNewsletter
               <tr>
                   <td align="center" valign="top">
                         <!-- // Begin Template Preheader \\ -->
-                        <table border="0" cellpadding="10" cellspacing="0" width="600" id="templatePreheader">
+                        <table border="0" cellpadding="10" cellspacing="0" id="templatePreheader">
                             <tr>
                                 <td valign="top" class="preheaderContent">
                                 
@@ -430,11 +550,11 @@ class TrelloNewsletter
                             </tr>
                         </table>
                         <!-- // End Template Preheader \\ -->
-                      <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
+                      <table border="0" cellpadding="0" cellspacing="0" id="templateContainer">
                           <tr>
                               <td align="center" valign="top">
                                     <!-- // Begin Template Header \\ -->
-                                  <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
+                                  <table border="0" cellpadding="0" cellspacing="0" id="templateHeader">
                                         <tr>
                                             <td class="headerContent">
                                               <!-- // Begin Module: Standard Header Image \\ -->
@@ -450,7 +570,7 @@ class TrelloNewsletter
                             <tr> 
                               <td align="center" valign="top">
                                     <!-- // Begin Template Body \\ -->
-                                  <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody">
+                                  <table border="0" cellpadding="0" cellspacing="0" id="templateBody">
                                       <tr>
                                             <td valign="top" class="bodyContent">
                                 
@@ -482,7 +602,7 @@ class TrelloNewsletter
                             <tr>
                                 <td align="center" valign="top">
                                       <!-- // Begin Template Footer \\ -->
-                                    <table border="0" cellpadding="10" cellspacing="0" width="600" id="templateFooter">
+                                    <table border="0" cellpadding="10" cellspacing="0" id="templateFooter">
                                         <tr>
                                             <td valign="top" class="footerContent">
                                               
