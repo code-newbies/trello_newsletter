@@ -32,6 +32,12 @@ To do this enter this command in your terminal:
 
 3. (optional) To make sure that this is loaded every time you start a new terminal session. You can place this command in `~/.profile` or `~/.bash_profile`.
 
+To make sure that this is loaded every time you start a new terminal session. You can place this command in ~/.profile. You can check to see if your environment variable is set by typing this command into your terminal:
+
+`$ env`
+
+This will output all your environment variables that you have set. Just search for `TRELLO_DEVELOPER_PUBLIC_KEY` to make sure that it is all set.
+
 4. Get your member token by visiting this url: `https://trello.com/1/authorize?key=YOURAPIKEY&response_type=token&expiration=never`
   - key: Your api key, the key that you got from step one.
   - response_type: 'token'
