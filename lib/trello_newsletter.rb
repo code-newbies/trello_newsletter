@@ -189,6 +189,21 @@ class TrelloNewsletter
             border-top: 2px solid #7ed321;
           }
 
+          .photo {
+            width: 100px;
+            height: 100px;
+            float: right;
+            margin-left: 9px;
+            width: 30%;
+            display: inline-block;
+          }
+
+          .photo-content {
+            width: 70%;
+            float:left;
+          }
+
+
           /* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: PREHEADER /\/\/\/\/\/\/\/\/\/\ */
 
           /**
@@ -590,8 +605,14 @@ class TrelloNewsletter
       template.puts"<hr />"
       list.cards.each do |card|
         post = Post.new(card)
-        template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
-        template.puts "    #{post.body}"
+        if (!post.attachment.nil?)
+          template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
+          template.puts "    <p class=\"photo-content\">#{post.body}</p>"
+          template.puts "    <img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\">"
+        else
+          template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
+          template.puts "    #{post.body}"
+        end
       end
     end
     template.puts "    #{meta.outro_text}"
