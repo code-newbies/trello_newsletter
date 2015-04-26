@@ -583,6 +583,7 @@ class TrelloNewsletter
     DOC
     content_lists.each do |list|
       template.puts "<h1 class=\"h1\">#{list.name}</h1>"
+      template.puts"<hr />"
       list.cards.each do |card|
         post = Post.new(card)
         template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
