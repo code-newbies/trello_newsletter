@@ -112,7 +112,7 @@ class TrelloNewsletter
           * @style heading 1
           */
           h1, .h1{
-            /*@editable*/ color:#606060;
+            /*@editable*/ color:#7ed321;
             display:block;
             /*@editable*/ font-family:Helvetica;
             /*@editable*/ font-size:15px;
@@ -135,8 +135,7 @@ class TrelloNewsletter
             /*@editable*/ color:#202020;
             display:block;
             /*@editable*/ font-family:Arial;
-            /*@editable*/ font-size:30px;
-            /*@editable*/ font-weight:bold;
+            /*@editable*/ font-size:20px;
             /*@editable*/ line-height:100%;
             margin-top:0;
             margin-right:0;
@@ -183,6 +182,11 @@ class TrelloNewsletter
             margin-bottom:10px;
             margin-left:0;
             /*@editable*/ text-align:left;
+          }
+
+          hr {
+            border: 0;
+            border-top: 2px solid #7ed321;
           }
 
           /* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: PREHEADER /\/\/\/\/\/\/\/\/\/\ */
