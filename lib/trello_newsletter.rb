@@ -29,8 +29,9 @@ class TrelloNewsletter
 
     @title = meta.title
     #headlines_list = lists.select { |n| n.attributes[:name] == "Headlines" }.first
-    content_lists = lists.reject{|n| n.attributes[:name]=="Meta" || n.attributes[:name]=="Mailchimp doc info"}
-    html_output(meta, content_lists)
+    content_lists = lists.reject{|n| n.attributes[:name]=="Meta" || n.attributes[:name]=="Mailchimp doc info" || n.attributes[:name] == "Callouts"}
+    callouts = lists.find { |n| n.attributes[:name] == "Callouts" }
+    html_output(meta, content_lists, callouts)
     puts "zippity zip zip"
     zip_output
     puts "Finished generating issue"
@@ -52,17 +53,17 @@ class TrelloNewsletter
   end
 
 
-  def html_output(meta, content_lists)
+  def html_output(meta, content_lists, callouts)
     template = File.open("index.html", "w")
     template.puts <<-DOC
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-            
+
             <!-- Facebook sharing information tags -->
             <meta property="og:title" content="*|MC:SUBJECT|*" />
-            
+
             <title>*|MC:SUBJECT|*</title>
         <style type="text/css">
           /* Client-specific Styles */
@@ -115,7 +116,8 @@ class TrelloNewsletter
             /*@editable*/ color:#7ed321;
             display:block;
             /*@editable*/ font-family:Helvetica;
-            /*@editable*/ font-size:15px;
+            /*@editable*/ font-size:10px;
+            /*@editable*/ text-transform:uppercase;
             /*@editable*/ font-weight:bold;
             /*@editable*/ line-height:150%;
             margin-top:0;
@@ -135,7 +137,7 @@ class TrelloNewsletter
             /*@editable*/ color:#202020;
             display:block;
             /*@editable*/ font-family:Arial;
-            /*@editable*/ font-size:20px;
+            /*@editable*/ font-size:16px;
             /*@editable*/ line-height:100%;
             margin-top:0;
             margin-right:0;
@@ -290,8 +292,6 @@ class TrelloNewsletter
             /*@editable*/ background-color:#FFFFFF;
           }
 
-          
-
           /**
           * @tab Body
           * @section body text
@@ -299,7 +299,7 @@ class TrelloNewsletter
           * @theme main
           */
           .bodyContent div{
-            padding: 0 12%;
+            padding: 0 10%;
             /*@editable*/ color:#606060;
             /*@editable*/ font-family:Helvetica;
             /*@editable*/ font-size:14px;
@@ -318,22 +318,95 @@ class TrelloNewsletter
             /*@editable*/ text-decoration:underline;
           }
 
+          p {
+            margin-top: 0;
+            font-size: 12px;
+          }
+
           .bodyContent img{
             display:inline-block;
+            font-size: 12px;
             width: 100px;
             height: 100px;
             height:auto;
+          }
+
+          .bodyContent div .clearfix {
+            padding: 0px;
+            margin-bottom: 30px;
+          }
+
+          .clearfix:after {
+            content: " ";
+            display: block;
+            height: 0;
+            clear: both;
           }
 
           .photo {
             width: 100px;
             height: 100px;
             float: right;
-            margin-left: 9px;
             width: 30%;
             display: inline-block;
           }
-          
+
+          .preview p { font-size: 9px; }
+
+          .bodyContent .callout {
+            width: 22%;
+            float: left;
+            margin-right: 10px;
+            padding: 20px;
+          }
+
+          .callout .h2 {
+            color: #555;
+            font-size: 12px;
+          }
+
+          .callout-title {
+            text-align: center;
+            font-size: 16px;
+          }
+
+          .callout p { line-height: 1.5; }
+
+          .callout:first-child {
+            padding-left: 8px;
+          }
+
+          .callout:nth-child(2n) {
+            border-left: 1px solid #eee;
+            border-right: 1px solid #eee;
+          }
+
+          .callout:last-child {
+            margin-right: 0;
+          }
+
+          .label-blog, .label-discourse, .label-twitter-chat {
+            padding: 2px 10px;
+            margin-left: 10px;
+            font-size: 8px;
+            vertical-align: top;
+            text-transform: uppercase;
+          }
+
+          .label-blog {
+            background: lightblue;
+            color: blue;
+          }
+
+          .label-twitter-chat {
+            background: lightgreen;
+            color: green;
+          }
+
+          .label-discourse {
+            background: blanchedalmond;
+            color: orange;
+          }
 
           .photo-content {
             width: 70%;
@@ -454,8 +527,9 @@ class TrelloNewsletter
               * @tip Make the first-level headings larger in size for better readability on small screens.
               */
               h1{
-                /*@editable*/ font-size:24px !important;
+                /*@editable*/ font-size:10px !important;
                 /*@editable*/ line-height:100% !important;
+                /*@editable*/ text-transform:uppercase !important;
               }
               /**
               * @tab Mobile Styles
@@ -463,7 +537,7 @@ class TrelloNewsletter
               * @tip Make the second-level headings larger in size for better readability on small screens.
               */
               h2{
-                /*@editable*/ font-size:20px !important;
+                /*@editable*/ font-size:18px !important;
                 /*@editable*/ line-height:100% !important;
               }
               /**
@@ -550,12 +624,11 @@ class TrelloNewsletter
                         <table border="0" cellpadding="10" cellspacing="0" id="templatePreheader">
                             <tr>
                                 <td valign="top" class="preheaderContent">
-                                
                                   <!-- // Begin Module: Standard Preheader \ -->
                                     <table border="0" cellpadding="10" cellspacing="0" width="100%">
                                       <tr>
                                           <td valign="top">
-                                              <div mc:edit="std_preheader_content">
+                                              <div class="preview" mc:edit="std_preheader_content">
                                                 #{meta.preview_text}
                                                 </div>
                                             </td>
@@ -569,7 +642,6 @@ class TrelloNewsletter
                                         </tr>
                                     </table>
                                   <!-- // End Module: Standard Preheader \ -->
-                                
                                 </td>
                             </tr>
                         </table>
@@ -597,7 +669,6 @@ class TrelloNewsletter
                                   <table border="0" cellpadding="0" cellspacing="0" id="templateBody">
                                       <tr>
                                             <td valign="top" class="bodyContent">
-                                
                                                 <!-- // Begin Module: Standard Content \\ -->
                                                 <table border="0" cellpadding="20" cellspacing="0" width="100%">
                                                   <tr>
@@ -609,26 +680,39 @@ class TrelloNewsletter
       template.puts"<hr />"
       list.cards.each do |card|
         post = Post.new(card)
-        if (!post.attachment.nil?)
-          template.puts "<div>"
+        if post.attachment
+          stripped_post = post.body.gsub("<p>","").gsub("</p>","")
+          template.puts "<div class=\"clearfix\">"
           template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
-          template.puts "    <p class=\"photo-content\">#{post.body}</p>"
+          template.puts "    <p class=\"photo-content\">#{stripped_post}</p>"
           template.puts "    <img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\">"
           template.puts "</div>"
         else
-          template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
+          template.puts "<div class=\"clearfix\">"
+          template.puts "    <h2 class=\"h2\">#{post.title}<span class=\"label-#{post.label.gsub(" ", "-") if post.label}\">#{post.label}</span></h2>"
           template.puts "    #{post.body}"
+          template.puts "</div>"
         end
       end
     end
+    template.puts "<h1 class=\"h1 callout-title\">Join us</h1>"
+    template.puts"<hr />"
+    callouts.cards.each do |card|
+      post = Post.new(card)
+      template.puts "<div class=\"callout\">"
+      template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
+      template.puts "    #{post.body}"
+      template.puts "</div>"
+    end
+    template.puts "<div class=\"clearfix\">"
     template.puts "    #{meta.outro_text}"
+    template.puts "</div>"
     template.puts "   </div>"
     template.puts "   </td>"
     template.puts "   </tr>"
     template.puts <<-DOC
                         </table>
                                  <!-- // End Module: Standard Content \\ -->
-                                                  
                                               </td>
                                           </tr>
                                       </table>
@@ -641,7 +725,6 @@ class TrelloNewsletter
                                     <table border="0" cellpadding="10" cellspacing="0" id="templateFooter">
                                         <tr>
                                             <td valign="top" class="footerContent">
-                                              
                                                   <!-- // Begin Module: Standard Footer \\ -->
                                                   <table border="0" cellpadding="10" cellspacing="0" width="100%">
                                                       <tr>
@@ -670,7 +753,6 @@ class TrelloNewsletter
                                                       </tr>
                                                   </table>
                                                   <!-- // End Module: Standard Footer \\ -->
-                                              
                                               </td>
                                           </tr>
                                       </table>
@@ -695,7 +777,6 @@ class TrelloNewsletter
     recipient_list = gb.lists.list({:filters => {:list_name => "From Website"}})
     list_id = recipient_list['data'].first['id']
     zipfile = File.open("newsletter_html.zip", "r") { |fp| fp.read }
-#    binding.pry
     begin
       gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: email_subject, 
                                                     from_email: "hello@codenewbie.org", from_name: "#CodeNewbie", 
