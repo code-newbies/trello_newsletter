@@ -1,7 +1,7 @@
 require_relative "trello_newsletter/version"
 require_relative "meta.rb"
 require_relative "post.rb"
-#require "pry"
+require "pry"
 require "trello"
 require "gibbon"
 require "zip"
@@ -28,8 +28,9 @@ class TrelloNewsletter
     meta = Meta.new(meta_list)
 
     @title = meta.title
-    headlines_list = lists.select { |n| n.attributes[:name] == "Headlines" }.first
-    html_output(meta, headlines_list)
+    #headlines_list = lists.select { |n| n.attributes[:name] == "Headlines" }.first
+    content_lists = lists.reject{|n| n.attributes[:name]=="Meta" || n.attributes[:name]=="Mailchimp doc info"}
+    html_output(meta, content_lists)
     puts "zippity zip zip"
     zip_output
     puts "Finished generating issue"
@@ -51,7 +52,7 @@ class TrelloNewsletter
   end
 
 
-  def html_output(meta, headlines_list)
+  def html_output(meta, content_lists)
     template = File.open("index.html", "w")
     template.puts <<-DOC
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -580,10 +581,13 @@ class TrelloNewsletter
                                                     <td valign"top">
                                                       <div>
     DOC
-    headlines_list.cards.each do |card|
-      post = Post.new(card)
-      template.puts "    <h1 class=\"h1\">#{post.title}</h1>"
-      template.puts "    #{post.body}"
+    content_lists.each do |list|
+      template.puts "<h1 class=\"h1\">#{list.name}</h1>"
+      list.cards.each do |card|
+        post = Post.new(card)
+        template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
+        template.puts "    #{post.body}"
+      end
     end
     template.puts "    #{meta.outro_text}"
     template.puts "   </div>"
@@ -677,3 +681,6 @@ class TrelloNewsletter
     end
   end
 end
+
+trello_news = TrelloNewsletter.new
+trello_news.generate
