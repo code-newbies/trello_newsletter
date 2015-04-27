@@ -622,12 +622,11 @@ class TrelloNewsletter
                         <table border="0" cellpadding="10" cellspacing="0" id="templatePreheader">
                             <tr>
                                 <td valign="top" class="preheaderContent">
-                                
                                   <!-- // Begin Module: Standard Preheader \ -->
                                     <table border="0" cellpadding="10" cellspacing="0" width="100%">
                                       <tr>
                                           <td valign="top">
-                                              <div mc:edit="std_preheader_content">
+                                              <div class="preview" mc:edit="std_preheader_content">
                                                 #{meta.preview_text}
                                                 </div>
                                             </td>
@@ -641,7 +640,6 @@ class TrelloNewsletter
                                         </tr>
                                     </table>
                                   <!-- // End Module: Standard Preheader \ -->
-                                
                                 </td>
                             </tr>
                         </table>
