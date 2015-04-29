@@ -342,6 +342,9 @@ class TrelloNewsletter
             height: 0;
             clear: both;
           }
+          div .clearfix {
+            clear:both;
+          }
 
           .photo {
             width: 100px;
@@ -670,17 +673,17 @@ class TrelloNewsletter
                                                 <!-- // Begin Module: Standard Content \\ -->
                                                 <table border="0" cellpadding="20" cellspacing="0" width="100%">
                                                   <tr>
-                                                    <td valign"top">
-                                                      <div>
     DOC
     content_lists.each do |list|
+      template.puts "<tr>"
+      template.puts "<td valign=\"top\">"
       template.puts "<h1 class=\"h1\">#{list.name}</h1>"
       template.puts"<hr />"
       list.cards.each do |card|
         post = Post.new(card)
         if post.attachment
           stripped_post = post.body.gsub("<p>","").gsub("</p>","")
-          template.puts "<div class=\"clearfix\">"
+          template.puts "<div class=\"clearfix\" style=\"clear:both;\">"
           template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
           template.puts "    <p class=\"photo-content\">#{stripped_post}</p>"
           template.puts "    <img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\">"
@@ -692,7 +695,11 @@ class TrelloNewsletter
           template.puts "</div>"
         end
       end
+      template.puts "</td>" 
+      template.puts "</tr>"
     end
+    template.puts "<tr>"
+    template.puts "<td valign=\"top\">"
     template.puts "<h1 class=\"h1 callout-title\">Join us</h1>"
     template.puts"<hr />"
     callouts.cards.each do |card|
@@ -702,13 +709,17 @@ class TrelloNewsletter
       template.puts "    #{post.body}"
       template.puts "</div>"
     end
+    template.puts "</td>"
+    template.puts "</tr>"
+    template.puts "<tr>"
+    template.puts "<td valign=\"top\">"
     template.puts "<div class=\"clearfix\">"
     template.puts "    #{meta.outro_text}"
     template.puts "</div>"
-    template.puts "   </div>"
-    template.puts "   </td>"
-    template.puts "   </tr>"
+    template.puts "</td>"
+    template.puts "</tr>"
     template.puts <<-DOC
+                    </tr>
                         </table>
                                  <!-- // End Module: Standard Content \\ -->
                                               </td>
