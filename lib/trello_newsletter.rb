@@ -1,7 +1,7 @@
 require_relative "trello_newsletter/version"
 require_relative "meta.rb"
 require_relative "post.rb"
-#require "pry"
+require "pry"
 require "trello"
 require "gibbon"
 require "zip"
@@ -28,8 +28,10 @@ class TrelloNewsletter
     meta = Meta.new(meta_list)
 
     @title = meta.title
-    headlines_list = lists.select { |n| n.attributes[:name] == "Headlines" }.first
-    html_output(meta, headlines_list)
+    #headlines_list = lists.select { |n| n.attributes[:name] == "Headlines" }.first
+    content_lists = lists.reject{|n| n.attributes[:name]=="Meta" || n.attributes[:name]=="Mailchimp doc info" || n.attributes[:name] == "Callouts"}
+    callouts = lists.find { |n| n.attributes[:name] == "Callouts" }
+    html_output(meta, content_lists, callouts)
     puts "zippity zip zip"
     zip_output
     puts "Finished generating issue"
@@ -51,17 +53,17 @@ class TrelloNewsletter
   end
 
 
-  def html_output(meta, headlines_list)
+  def html_output(meta, content_lists, callouts)
     template = File.open("index.html", "w")
     template.puts <<-DOC
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-            
+
             <!-- Facebook sharing information tags -->
             <meta property="og:title" content="*|MC:SUBJECT|*" />
-            
+
             <title>*|MC:SUBJECT|*</title>
         <style type="text/css">
           /* Client-specific Styles */
@@ -89,12 +91,17 @@ class TrelloNewsletter
             /*@editable*/ background-color:#F2F2F2;
           }
 
+          #templateBody {
+            width: 600px;
+          }
+
           /**
           * @tab Page
           * @section email border
           * @tip Set the border for your email.
           */
           #templateContainer{
+            width: 600px;
             /*@editable*/ /*border: 1px solid #DDDDDD*/;
             border: 0;
           }
@@ -106,10 +113,11 @@ class TrelloNewsletter
           * @style heading 1
           */
           h1, .h1{
-            /*@editable*/ color:#606060;
+            /*@editable*/ color:#7ed321;
             display:block;
             /*@editable*/ font-family:Helvetica;
-            /*@editable*/ font-size:15px;
+            /*@editable*/ font-size:10px;
+            /*@editable*/ text-transform:uppercase;
             /*@editable*/ font-weight:bold;
             /*@editable*/ line-height:150%;
             margin-top:0;
@@ -129,8 +137,7 @@ class TrelloNewsletter
             /*@editable*/ color:#202020;
             display:block;
             /*@editable*/ font-family:Arial;
-            /*@editable*/ font-size:30px;
-            /*@editable*/ font-weight:bold;
+            /*@editable*/ font-size:16px;
             /*@editable*/ line-height:100%;
             margin-top:0;
             margin-right:0;
@@ -179,6 +186,13 @@ class TrelloNewsletter
             /*@editable*/ text-align:left;
           }
 
+          hr {
+            border: 0;
+            border-top: 2px solid #7ed321;
+          }
+
+
+
           /* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: PREHEADER /\/\/\/\/\/\/\/\/\/\ */
 
           /**
@@ -188,6 +202,7 @@ class TrelloNewsletter
           * @theme page
           */
           #templatePreheader{
+            width: 600px;
             /*@editable*/ background-color:#FFFFFF;
           }
 
@@ -224,6 +239,7 @@ class TrelloNewsletter
           * @theme header
           */
           #templateHeader{
+            width: 600px;
             /*@editable*/ background-color:#FFFFFF;
             /*@editable*/ border-bottom:0;
           }
@@ -283,7 +299,7 @@ class TrelloNewsletter
           * @theme main
           */
           .bodyContent div{
-            padding: 0 12%;
+            padding: 0 10%;
             /*@editable*/ color:#606060;
             /*@editable*/ font-family:Helvetica;
             /*@editable*/ font-size:14px;
@@ -302,9 +318,97 @@ class TrelloNewsletter
             /*@editable*/ text-decoration:underline;
           }
 
+          p {
+            margin-top: 0;
+            font-size: 12px;
+          }
+
           .bodyContent img{
-            display:inline;
+            display:inline-block;
+            font-size: 12px;
+            width: 100px;
+            height: 100px;
             height:auto;
+          }
+
+          .bodyContent div .clearfix {
+            padding: 0px;
+            margin-bottom: 30px;
+          }
+
+          .clearfix:after {
+            content: " ";
+            display: block;
+            height: 0;
+            clear: both;
+          }
+
+          .photo {
+            width: 100px;
+            height: 100px;
+            float: right;
+            width: 30%;
+            display: inline-block;
+          }
+
+          .bodyContent .callout {
+            width: 22%;
+            float: left;
+            margin-right: 10px;
+            padding: 20px;
+          }
+
+          .callout .h2 {
+            color: #555;
+            font-size: 12px;
+          }
+
+          .callout-title {
+            text-align: center;
+            font-size: 16px;
+          }
+
+          .callout p { line-height: 1.5; }
+
+          .callout:first-child {
+            padding-left: 8px;
+          }
+
+          .callout:nth-child(2n) {
+            border-left: 1px solid #eee;
+            border-right: 1px solid #eee;
+          }
+
+          .callout:last-child {
+            margin-right: 0;
+          }
+
+          .label-blog, .label-discourse, .label-twitter-chat {
+            padding: 2px 10px;
+            margin-left: 10px;
+            font-size: 8px;
+            vertical-align: top;
+            text-transform: uppercase;
+          }
+
+          .label-blog {
+            background: lightblue;
+            color: blue;
+          }
+
+          .label-twitter-chat {
+            background: lightgreen;
+            color: green;
+          }
+
+          .label-discourse {
+            background: blanchedalmond;
+            color: orange;
+          }
+
+          .photo-content {
+            width: 70%;
+            float:left;
           }
 
           /* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: FOOTER /\/\/\/\/\/\/\/\/\/\ */
@@ -316,6 +420,7 @@ class TrelloNewsletter
           * @theme footer
           */
           #templateFooter{
+            width: 600px;
             /*@editable*/ background-color:#FFFFFF;
             /*@editable*/ border-top:0;
             /*@editable*/ border-bottom:0;
@@ -393,6 +498,117 @@ class TrelloNewsletter
           #monkeyRewards img{
             max-width:190px;
           }
+
+          /* /\/\/\/\/\/\/\/\/ MOBILE STYLES /\/\/\/\/\/\/\/\/ */
+
+            @media only screen and (max-width: 480px){
+
+              /* /\/\/\/\/\/\/ CLIENT-SPECIFIC MOBILE STYLES /\/\/\/\/\/\/ */
+              body, table, td, p, a, li, blockquote{-webkit-text-size-adjust:none !important;} /* Prevent Webkit platforms from changing default text sizes */
+                      body{width:100% !important; min-width:100% !important;} /* Prevent iOS Mail from adding padding to the body */
+              /* /\/\/\/\/\/\/ MOBILE RESET STYLES /\/\/\/\/\/\/ */
+              #bodyCell{padding:10px !important;}
+              /* /\/\/\/\/\/\/ MOBILE TEMPLATE STYLES /\/\/\/\/\/\/ */
+              /* ======== Page Styles ======== */
+              /**
+              * @tab Mobile Styles
+              * @section template width
+              * @tip Make the template fluid for portrait or landscape view adaptability. If a fluid layout doesn't work for you, set the width to 300px instead.
+              */
+              #templateContainer{
+                max-width:300px !important;
+                /*@editable*/ width:100% !important;
+              }
+              /**
+              * @tab Mobile Styles
+              * @section heading 1
+              * @tip Make the first-level headings larger in size for better readability on small screens.
+              */
+              h1{
+                /*@editable*/ font-size:10px !important;
+                /*@editable*/ line-height:100% !important;
+                /*@editable*/ text-transform:uppercase !important;
+              }
+              /**
+              * @tab Mobile Styles
+              * @section heading 2
+              * @tip Make the second-level headings larger in size for better readability on small screens.
+              */
+              h2{
+                /*@editable*/ font-size:18px !important;
+                /*@editable*/ line-height:100% !important;
+              }
+              /**
+              * @tab Mobile Styles
+              * @section heading 3
+              * @tip Make the third-level headings larger in size for better readability on small screens.
+              */
+              h3{
+                /*@editable*/ font-size:18px !important;
+                /*@editable*/ line-height:100% !important;
+              }
+              /**
+              * @tab Mobile Styles
+              * @section heading 4
+              * @tip Make the fourth-level headings larger in size for better readability on small screens.
+              */
+              h4{
+                /*@editable*/ font-size:16px !important;
+                /*@editable*/ line-height:100% !important;
+              }
+              /* ======== Header Styles ======== */
+              #templatePreheader{display:none !important;} /* Hide the template preheader to save space */
+              /**
+              * @tab Mobile Styles
+              * @section header image
+              * @tip Make the main header image fluid for portrait or landscape view adaptability, and set the image's original width as the max-width. If a fluid setting doesn't work, set the image width to half its original size instead.
+              */
+              #headerImage{
+                height:auto !important;
+                /*@editable*/ max-width:300px !important;
+                /*@editable*/ width:100% !important;
+              }
+              /**
+              * @tab Mobile Styles
+              * @section header text
+              * @tip Make the header content text larger in size for better readability on small screens. We recommend a font size of at least 16px.
+              */
+              .headerContent{
+                /*@editable*/ font-size:20px !important;
+                /*@editable*/ line-height:125% !important;
+              }
+              /* ======== Body Styles ======== */
+              /**
+              * @tab Mobile Styles
+              * @section body image
+              * @tip Make the main body image fluid for portrait or landscape view adaptability, and set the image's original width as the max-width. If a fluid setting doesn't work, set the image width to half its original size instead.
+              */
+              #bodyImage{
+                height:auto !important;
+                /*@editable*/ max-width:280px !important;
+                /*@editable*/ width:100% !important;
+              }
+              /**
+              * @tab Mobile Styles
+              * @section body text
+              * @tip Make the body content text larger in size for better readability on small screens. We recommend a font size of at least 16px.
+              */
+              .bodyContent{
+                /*@editable*/ font-size:18px !important;
+                /*@editable*/ line-height:125% !important;
+              }
+              /* ======== Footer Styles ======== */
+              /**
+              * @tab Mobile Styles
+              * @section footer text
+              * @tip Make the body content text larger in size for better readability on small screens.
+              */
+              .footerContent{
+                /*@editable*/ font-size:14px !important;
+                /*@editable*/ line-height:115% !important;
+              }
+              .footerContent a{display:block !important;} /* Place footer social and utility links on their own lines, for easier access */
+          }
         </style>
       </head>
     DOC
@@ -403,15 +619,14 @@ class TrelloNewsletter
               <tr>
                   <td align="center" valign="top">
                         <!-- // Begin Template Preheader \\ -->
-                        <table border="0" cellpadding="10" cellspacing="0" width="600" id="templatePreheader">
+                        <table border="0" cellpadding="10" cellspacing="0" id="templatePreheader">
                             <tr>
                                 <td valign="top" class="preheaderContent">
-                                
                                   <!-- // Begin Module: Standard Preheader \ -->
                                     <table border="0" cellpadding="10" cellspacing="0" width="100%">
                                       <tr>
                                           <td valign="top">
-                                              <div mc:edit="std_preheader_content">
+                                              <div class="preview" mc:edit="std_preheader_content">
                                                 #{meta.preview_text}
                                                 </div>
                                             </td>
@@ -425,16 +640,15 @@ class TrelloNewsletter
                                         </tr>
                                     </table>
                                   <!-- // End Module: Standard Preheader \ -->
-                                
                                 </td>
                             </tr>
                         </table>
                         <!-- // End Template Preheader \\ -->
-                      <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
+                      <table border="0" cellpadding="0" cellspacing="0" id="templateContainer">
                           <tr>
                               <td align="center" valign="top">
                                     <!-- // Begin Template Header \\ -->
-                                  <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
+                                  <table border="0" cellpadding="0" cellspacing="0" id="templateHeader">
                                         <tr>
                                             <td class="headerContent">
                                               <!-- // Begin Module: Standard Header Image \\ -->
@@ -450,29 +664,53 @@ class TrelloNewsletter
                             <tr> 
                               <td align="center" valign="top">
                                     <!-- // Begin Template Body \\ -->
-                                  <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody">
+                                  <table border="0" cellpadding="0" cellspacing="0" id="templateBody">
                                       <tr>
                                             <td valign="top" class="bodyContent">
-                                
                                                 <!-- // Begin Module: Standard Content \\ -->
                                                 <table border="0" cellpadding="20" cellspacing="0" width="100%">
                                                   <tr>
                                                     <td valign"top">
                                                       <div>
     DOC
-    headlines_list.cards.each do |card|
-      post = Post.new(card)
-      template.puts "    <h1 class=\"h1\">#{post.title}</h1>"
-      template.puts "    #{post.body}"
+    content_lists.each do |list|
+      template.puts "<h1 class=\"h1\">#{list.name}</h1>"
+      template.puts"<hr />"
+      list.cards.each do |card|
+        post = Post.new(card)
+        if post.attachment
+          stripped_post = post.body.gsub("<p>","").gsub("</p>","")
+          template.puts "<div class=\"clearfix\">"
+          template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
+          template.puts "    <p class=\"photo-content\">#{stripped_post}</p>"
+          template.puts "    <img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\">"
+          template.puts "</div>"
+        else
+          template.puts "<div class=\"clearfix\">"
+          template.puts "    <h2 class=\"h2\">#{post.title}<span class=\"label-#{post.label.gsub(" ", "-") if post.label}\">#{post.label}</span></h2>"
+          template.puts "    #{post.body}"
+          template.puts "</div>"
+        end
+      end
     end
+    template.puts "<h1 class=\"h1 callout-title\">Join us</h1>"
+    template.puts"<hr />"
+    callouts.cards.each do |card|
+      post = Post.new(card)
+      template.puts "<div class=\"callout\">"
+      template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
+      template.puts "    #{post.body}"
+      template.puts "</div>"
+    end
+    template.puts "<div class=\"clearfix\">"
     template.puts "    #{meta.outro_text}"
+    template.puts "</div>"
     template.puts "   </div>"
     template.puts "   </td>"
     template.puts "   </tr>"
     template.puts <<-DOC
                         </table>
                                  <!-- // End Module: Standard Content \\ -->
-                                                  
                                               </td>
                                           </tr>
                                       </table>
@@ -482,10 +720,9 @@ class TrelloNewsletter
                             <tr>
                                 <td align="center" valign="top">
                                       <!-- // Begin Template Footer \\ -->
-                                    <table border="0" cellpadding="10" cellspacing="0" width="600" id="templateFooter">
+                                    <table border="0" cellpadding="10" cellspacing="0" id="templateFooter">
                                         <tr>
                                             <td valign="top" class="footerContent">
-                                              
                                                   <!-- // Begin Module: Standard Footer \\ -->
                                                   <table border="0" cellpadding="10" cellspacing="0" width="100%">
                                                       <tr>
@@ -514,7 +751,6 @@ class TrelloNewsletter
                                                       </tr>
                                                   </table>
                                                   <!-- // End Module: Standard Footer \\ -->
-                                              
                                               </td>
                                           </tr>
                                       </table>
@@ -539,7 +775,6 @@ class TrelloNewsletter
     recipient_list = gb.lists.list({:filters => {:list_name => "From Website"}})
     list_id = recipient_list['data'].first['id']
     zipfile = File.open("newsletter_html.zip", "r") { |fp| fp.read }
-#    binding.pry
     begin
       gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: email_subject, 
                                                     from_email: "hello@codenewbie.org", from_name: "#CodeNewbie", 
@@ -557,3 +792,6 @@ class TrelloNewsletter
     end
   end
 end
+
+trello_news = TrelloNewsletter.new
+trello_news.generate

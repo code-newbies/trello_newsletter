@@ -15,6 +15,20 @@ class Post
     md_to_html(text)
   end
 
+  def attachment
+    attachment = card.attachments.first
+    if attachment
+      attachment.attributes[:url]  # Any attachments are hosted by trello
+    end
+  end
+
+  def label
+    label = card.labels.first
+    if label
+      label.name
+    end
+  end
+
   def sponsored?
     card.labels.any? { |label| label.name == "Sponsored" }
   end
