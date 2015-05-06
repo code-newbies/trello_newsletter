@@ -29,9 +29,13 @@ class TrelloNewsletter
 
     @title = meta.title
     #headlines_list = lists.select { |n| n.attributes[:name] == "Headlines" }.first
-    content_lists = lists.reject{|n| n.attributes[:name]=="Meta" || n.attributes[:name]=="Mailchimp doc info" || n.attributes[:name] == "Callouts"}
+    content_lists = lists.reject{|n| n.attributes[:name]=="Meta" || 
+                                     n.attributes[:name]=="Mailchimp doc info" || 
+                                     n.attributes[:name] == "Callouts" ||
+                                     n.attributes[:name] == "Sponsors"}
     callouts = lists.find { |n| n.attributes[:name] == "Callouts" }
-    html_output(meta, content_lists, callouts)
+    sponsors = lists.find { |n| n.attributes[:name] == "Sponsors" }
+    html_output(meta, content_lists, callouts, sponsors)
     puts "zippity zip zip"
     zip_output
     puts "Finished generating issue"
@@ -53,7 +57,7 @@ class TrelloNewsletter
   end
 
 
-  def html_output(meta, content_lists, callouts)
+  def html_output(meta, content_lists, callouts, sponsors)
     template = File.open("index.html", "w")
     template.puts <<-DOC
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -700,6 +704,21 @@ class TrelloNewsletter
     end
     template.puts "<tr>"
     template.puts "<td valign=\"top\">"
+    template.puts "<h1 class=\"h1\">#{sponsors.name}</h1>"
+    template.puts"<hr />"
+    sponsors.cards.each do |card|
+      post = Post.new(card)
+      stripped_post = post.body.gsub("<p>","").gsub("</p>","")
+      template.puts "<div class=\"clearfix\" style=\"clear:both;\">"
+      template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
+      template.puts "    <p class=\"photo-content\">#{stripped_post}</p>"
+      template.puts "    <img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\">"
+      template.puts "</div>"
+    end
+    template.puts "</td>" 
+    template.puts "</tr>"
+    template.puts "<tr>"
+    template.puts "<td valign=\"top\">"
     template.puts "<h1 class=\"h1 callout-title\">Join us</h1>"
     template.puts"<hr />"
     callouts.cards.each do |card|
@@ -803,6 +822,3 @@ class TrelloNewsletter
     end
   end
 end
-
-trello_news = TrelloNewsletter.new
-trello_news.generate
