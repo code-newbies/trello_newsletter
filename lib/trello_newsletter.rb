@@ -138,7 +138,7 @@ class TrelloNewsletter
           * @style heading 2
           */
           h2, .h2{
-            /*@editable*/ color:#202020;
+            /*@editable*/ color:#606060;
             display:block;
             /*@editable*/ font-family:Arial;
             /*@editable*/ font-size:16px;
@@ -229,9 +229,9 @@ class TrelloNewsletter
           * @tip Set the styling for your email's preheader links. Choose a color that helps them stand out from your text.
           */
           .preheaderContent div a:link, .preheaderContent div a:visited, /* Yahoo! Mail Override */ .preheaderContent div a .yshortcuts /* Yahoo! Mail Override */{
-            /*@editable*/ color:#336699;
+            /*@editable*/ color:#7ed321;
             /*@editable*/ font-weight:normal;
-            /*@editable*/ text-decoration:underline;
+            /*@editable*/ text-decoration:none;
           }
 
           /* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: HEADER /\/\/\/\/\/\/\/\/\/\ */
@@ -275,7 +275,7 @@ class TrelloNewsletter
           * @tip Set the styling for your email's header links. Choose a color that helps them stand out from your text.
           */
           .headerContent a:link, .headerContent a:visited, /* Yahoo! Mail Override */ .headerContent a .yshortcuts /* Yahoo! Mail Override */{
-            /*@editable*/ color:#336699;
+            /*@editable*/ color:#000;
             /*@editable*/ font-weight:normal;
             /*@editable*/ text-decoration:underline;
           }
@@ -303,7 +303,7 @@ class TrelloNewsletter
           * @theme main
           */
           .bodyContent div{
-            padding: 0 10%;
+            padding: 10px 10%;
             /*@editable*/ color:#606060;
             /*@editable*/ font-family:Helvetica;
             /*@editable*/ font-size:14px;
@@ -317,7 +317,12 @@ class TrelloNewsletter
           * @tip Set the styling for your email's main content links. Choose a color that helps them stand out from your text.
           */
           .bodyContent div a:link, .bodyContent div a:visited, /* Yahoo! Mail Override */ .bodyContent div a .yshortcuts /* Yahoo! Mail Override */{
-            /*@editable*/ color:#6DC6DD;
+            /*@editable*/ color:#606060;
+            /*@editable*/ font-weight:normal;
+            /*@editable*/ text-decoration:underline;
+          }
+
+          .bodyContent div a:link .h2, .bodyContent div a:visited, /* Yahoo! Mail Override */ .bodyContent div a .yshortcuts /* Yahoo! Mail Override */{
             /*@editable*/ font-weight:normal;
             /*@editable*/ text-decoration:underline;
           }
@@ -661,7 +666,7 @@ class TrelloNewsletter
                                               <!-- // Begin Module: Standard Header Image \\ -->
                                               <img src="#{meta.header_image}" style="max-width:600px;" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext />
                                               <!-- // End Module: Standard Header Image \\ -->
-                                            
+
                                             </td>
                                         </tr>
                                     </table>
@@ -688,18 +693,18 @@ class TrelloNewsletter
         if post.attachment
           stripped_post = post.body.gsub("<p>","").gsub("</p>","")
           template.puts "<div class=\"clearfix\" style=\"clear:both;\">"
-          template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
+          template.puts "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}</h2></a>"
           template.puts "    <p class=\"photo-content\">#{stripped_post}</p>"
           template.puts "    <a href=\"#{post.link}\" target=\"_blank\"><img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\"></a>"
           template.puts "</div>"
         else
           template.puts "<div class=\"clearfix\">"
-          template.puts "    <h2 class=\"h2\">#{post.title}<span class=\"label-#{post.label.gsub(" ", "-") if post.label}\">#{post.label}</span></h2>"
+          template.puts "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}<span class=\"label-#{post.label.gsub(" ", "-") if post.label}\">#{post.label}</span></h2></a>"
           template.puts "    #{post.body}"
           template.puts "</div>"
         end
       end
-      template.puts "</td>" 
+      template.puts "</td>"
       template.puts "</tr>"
     end
     template.puts "<tr>"
@@ -710,7 +715,7 @@ class TrelloNewsletter
       post = Post.new(card)
       stripped_post = post.body.gsub("<p>","").gsub("</p>","")
       template.puts "<div class=\"clearfix\" style=\"clear:both;\">"
-      template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
+      template.puts "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}</h2></a>"
       template.puts "    <p class=\"photo-content\">#{stripped_post}</p>"
       template.puts "    <a href=\"#{post.link}\" target=\"_blank\"><img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\"></a>"
       template.puts "</div>"
@@ -724,7 +729,7 @@ class TrelloNewsletter
     callouts.cards.each do |card|
       post = Post.new(card)
       template.puts "<div class=\"callout\">"
-      template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
+      template.puts "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}</h2></a>"
       template.puts "    #{post.body}"
       template.puts "</div>"
     end
