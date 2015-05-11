@@ -29,6 +29,13 @@ class Post
     end
   end
 
+  def link
+    comment_texts = card.actions({filter: 'commentCard'})
+    comment_texts.collect do |comment|
+      comment.data["text"] if comment.data["text"].include?("http")
+    end.first
+  end
+
   def sponsored?
     card.labels.any? { |label| label.name == "Sponsored" }
   end

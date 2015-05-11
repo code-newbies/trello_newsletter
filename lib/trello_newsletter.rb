@@ -13,6 +13,8 @@ Trello.configure do |config|
 end
 
 class TrelloNewsletter
+  REJECTED_LISTS = [ "Meta", "Mailchimp doc info", "Callouts", "Sponsors" ]
+
   def board_name
     "CodeNewbie Newsletter"
   end
@@ -29,12 +31,10 @@ class TrelloNewsletter
 
     @title = meta.title
     #headlines_list = lists.select { |n| n.attributes[:name] == "Headlines" }.first
-    content_lists = lists.reject{|n| n.attributes[:name]=="Meta" || 
-                                     n.attributes[:name]=="Mailchimp doc info" || 
-                                     n.attributes[:name] == "Callouts" ||
-                                     n.attributes[:name] == "Sponsors"}
+    content_lists = lists.reject { |n| REJECTED_LISTS.include?(n.attributes[:name]) }
     callouts = lists.find { |n| n.attributes[:name] == "Callouts" }
     sponsors = lists.find { |n| n.attributes[:name] == "Sponsors" }
+
     html_output(meta, content_lists, callouts, sponsors)
     puts "zippity zip zip"
     zip_output
@@ -690,7 +690,7 @@ class TrelloNewsletter
           template.puts "<div class=\"clearfix\" style=\"clear:both;\">"
           template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
           template.puts "    <p class=\"photo-content\">#{stripped_post}</p>"
-          template.puts "    <img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\">"
+          template.puts "    <a href=\"#{post.link}\" target=\"_blank\"><img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\"></a>"
           template.puts "</div>"
         else
           template.puts "<div class=\"clearfix\">"
@@ -712,10 +712,10 @@ class TrelloNewsletter
       template.puts "<div class=\"clearfix\" style=\"clear:both;\">"
       template.puts "    <h2 class=\"h2\">#{post.title}</h2>"
       template.puts "    <p class=\"photo-content\">#{stripped_post}</p>"
-      template.puts "    <img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\">"
+      template.puts "    <a href=\"#{post.link}\" target=\"_blank\"><img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\"></a>"
       template.puts "</div>"
     end
-    template.puts "</td>" 
+    template.puts "</td>"
     template.puts "</tr>"
     template.puts "<tr>"
     template.puts "<td valign=\"top\">"
