@@ -117,7 +117,7 @@ class TrelloNewsletter
           * @style heading 1
           */
           h1, .h1{
-            /*@editable*/ color:#7ed321;
+            /*@editable*/ color:#202020;
             display:block;
             /*@editable*/ font-family:Helvetica;
             /*@editable*/ font-size:10px;
@@ -275,7 +275,7 @@ class TrelloNewsletter
           * @tip Set the styling for your email's header links. Choose a color that helps them stand out from your text.
           */
           .headerContent a:link, .headerContent a:visited, /* Yahoo! Mail Override */ .headerContent a .yshortcuts /* Yahoo! Mail Override */{
-            /*@editable*/ color:#000;
+            /*@editable*/ color:#336699;
             /*@editable*/ font-weight:normal;
             /*@editable*/ text-decoration:underline;
           }
@@ -415,7 +415,7 @@ class TrelloNewsletter
 
           .label-discourse {
             background: blanchedalmond;
-            color: orange;
+            color: rgb(204, 109, 6);
           }
 
           .photo-content {
@@ -736,11 +736,6 @@ class TrelloNewsletter
     template.puts "</td>"
     template.puts "</tr>"
     template.puts "<tr>"
-    template.puts "<td valign=\"top\">"
-    template.puts "<div class=\"clearfix\">"
-    template.puts "    #{meta.outro_text}"
-    template.puts "</div>"
-    template.puts "</td>"
     template.puts "</tr>"
     template.puts <<-DOC
                     </tr>
