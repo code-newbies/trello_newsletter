@@ -117,7 +117,7 @@ class TrelloNewsletter
           * @style heading 1
           */
           h1, .h1{
-            /*@editable*/ color:#202020;
+            /*@editable*/ color:#7ed321;
             display:block;
             /*@editable*/ font-family:Helvetica;
             /*@editable*/ font-size:10px;
@@ -277,12 +277,12 @@ class TrelloNewsletter
           .headerContent a:link, .headerContent a:visited, /* Yahoo! Mail Override */ .headerContent a .yshortcuts /* Yahoo! Mail Override */{
             /*@editable*/ color:#336699;
             /*@editable*/ font-weight:normal;
-            /*@editable*/ text-decoration:underline;
+            /*@editable*/ text-decoration:none;
           }
 
           #headerImage{
             height:auto;
-            max-width:600px !important;
+            max-width: 100% !important;
           }
 
           /* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: MAIN BODY /\/\/\/\/\/\/\/\/\/\ */
@@ -319,16 +319,17 @@ class TrelloNewsletter
           .bodyContent div a:link, .bodyContent div a:visited, /* Yahoo! Mail Override */ .bodyContent div a .yshortcuts /* Yahoo! Mail Override */{
             /*@editable*/ color:#606060;
             /*@editable*/ font-weight:normal;
-            /*@editable*/ text-decoration:underline;
+            /*@editable*/ text-decoration:none;
           }
 
           .bodyContent div a:link .h2, .bodyContent div a:visited, /* Yahoo! Mail Override */ .bodyContent div a .yshortcuts /* Yahoo! Mail Override */{
             /*@editable*/ font-weight:normal;
-            /*@editable*/ text-decoration:underline;
+            /*@editable*/ text-decoration:none;
           }
 
           p {
             margin-top: 0;
+            margin-bottom: 0;
             font-size: 12px;
           }
 
@@ -512,6 +513,69 @@ class TrelloNewsletter
           }
 
           /* /\/\/\/\/\/\/\/\/ MOBILE STYLES /\/\/\/\/\/\/\/\/ */
+             @media only screen and (max-width:480px){
+               #templateBody, #templateContainer, #templatePreheader, #templateHeader, #headerImage, #headerContent,
+               #templateFooter, img #headerImage #campaign-icon {
+                 color:#CCCCCC !important;
+                 font-size:20px !important;
+                 max-width: 320px;
+               }
+
+              img.photo { float: left !important; }
+
+              .photo-content {
+                width: 100% !important;
+                padding-bottom: 20px !important;
+              }
+
+              .clearfix { padding: 10px 0px !important; }
+
+              p {
+                font-size: 17px !important;
+                line-height: 150% !important;
+                color: black !important;
+                margin-bottom: 0;
+              }
+
+              .h2 {
+                font-size: 20px !important;
+                color: black !important;
+                font-weight: 900 !important;
+                line-height: 150% !important;
+              }
+
+              .callout {
+                width: 100% !important;
+                padding: 0px !important;
+                border-left: none !important;
+                border-right: none !important;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 20px !important;
+                margin-bottom: 20px !important;
+              }
+
+              .callout .h2 {
+                margin-bottom: 0px !important;
+                font-size: 17px !important;
+              }
+
+              .callout:nth-child(2n) {
+                border: none;
+                border-bottom: 1px solid #ddd;
+              }
+
+              .callout:last-child {
+                border: none;
+              }
+
+              .callout-title {
+                background: #7ed321;
+                padding: 10px 0px;
+                margin-bottom: 20px !important;
+                color: white !important;
+                font-size: 17px !important;
+              }
+            }
 
             @media only screen and (max-width: 480px){
 
@@ -664,7 +728,7 @@ class TrelloNewsletter
                                         <tr>
                                             <td class="headerContent">
                                               <!-- // Begin Module: Standard Header Image \\ -->
-                                              <img src="#{meta.header_image}" style="max-width:600px;" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext />
+                                              <img src="#{meta.header_image}" style="max-width:100%;" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext />
                                               <!-- // End Module: Standard Header Image \\ -->
 
                                             </td>
@@ -725,7 +789,6 @@ class TrelloNewsletter
     template.puts "<tr>"
     template.puts "<td valign=\"top\">"
     template.puts "<h1 class=\"h1 callout-title\">Join us</h1>"
-    template.puts"<hr />"
     callouts.cards.each do |card|
       post = Post.new(card)
       template.puts "<div class=\"callout\">"
