@@ -364,7 +364,7 @@ class TrelloNewsletter
             display: inline-block;
           }
 
-          .bodyContent .callout {
+          /*.bodyContent .callout {
             width: 22%;
             float: left;
             margin-right: 10px;
@@ -394,7 +394,7 @@ class TrelloNewsletter
 
           .callout:last-child {
             margin-right: 0;
-          }
+          }*/
 
           .label-blog, .label-discourse, .label-twitter-chat {
             padding: 2px 10px;
@@ -512,6 +512,51 @@ class TrelloNewsletter
             max-width:190px;
           }
 
+          /* CALLOUT STYLES */
+          .callout a {
+            text-decoration: none;
+          }
+          
+          div.callout {
+            width: 100% !important;
+            min-width: 100% !important;
+            padding: 0px !important;
+            border-left: none !important;
+            border-right: none !important;
+            padding-bottom: 20px !important;
+            margin-bottom: 20px !important;
+            text-align: center;
+          }
+
+          .callout .h2 {
+            margin-bottom: 0px !important;
+            font-size: 17px !important;
+            text-align: center;
+            color: black;
+            line-height: 150% !important;
+          }
+
+          .callout:last-child {
+            border: none;
+          }
+
+          .callout-title {
+            background: #7ed321;
+            padding: 10px 0px;
+            margin-bottom: 30px !important;
+            color: white !important;
+            font-size: 17px !important;
+            text-align: center;
+          }
+              
+          .callout p {
+            font-size: 12px !important;
+            line-height: 150% !important;
+            color: black !important;
+            margin-bottom: 0;
+            font-family: sans-serif;
+          }
+
           /* /\/\/\/\/\/\/\/\/ MOBILE STYLES /\/\/\/\/\/\/\/\/ */
              @media only screen and (max-width:480px){
                #templateBody, #templateContainer, #templatePreheader, #templateHeader, #headerImage, #headerContent,
@@ -542,38 +587,6 @@ class TrelloNewsletter
                 color: black !important;
                 font-weight: 900 !important;
                 line-height: 150% !important;
-              }
-
-              .callout {
-                width: 100% !important;
-                padding: 0px !important;
-                border-left: none !important;
-                border-right: none !important;
-                border-bottom: 1px solid #ddd;
-                padding-bottom: 20px !important;
-                margin-bottom: 20px !important;
-              }
-
-              .callout .h2 {
-                margin-bottom: 0px !important;
-                font-size: 17px !important;
-              }
-
-              .callout:nth-child(2n) {
-                border: none;
-                border-bottom: 1px solid #ddd;
-              }
-
-              .callout:last-child {
-                border: none;
-              }
-
-              .callout-title {
-                background: #7ed321;
-                padding: 10px 0px;
-                margin-bottom: 20px !important;
-                color: white !important;
-                font-size: 17px !important;
               }
             }
 
@@ -829,9 +842,7 @@ class TrelloNewsletter
                                                           <td valign="top" width="350">
                                                               <div mc:edit="std_footer">
                                   <em>Copyright &copy; *|CURRENT_YEAR|* *|LIST:COMPANY|*, All rights reserved.</em>
-                                  <br />
                                   *|IFNOT:ARCHIVE_PAGE|* *|LIST:DESCRIPTION|*
-                                  <br />
                                   </div>
                                                           </td>
                                                       </tr>
@@ -851,7 +862,6 @@ class TrelloNewsletter
                                   </td>
                               </tr>
                           </table>
-                          <br />
                       </td>
                   </tr>
               </table>
