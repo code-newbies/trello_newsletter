@@ -22,6 +22,13 @@ Or without ssh (you'll need to enter in your GitHub login details):
 
 `$ git clone https://github.com/code-newbies/trello_newsletter.git`
 
+#### Updating the Project
+Updates to the project will be done in the master branch. It is recommended to run a `git pull` command from your terminal
+to make sure your local copy of the project is updated. The steps are:
+
+`$ git checkout master` - (to make sure you're working in the master branch)
+`$ git pull origin master`- (to update your local repo)
+
 #### Set API Keys
 Next is setting up your environment variables. Your environment variables will store your secret API key's. 
 We need two sets of API key's to get this working; Trello and Mailchimp.
