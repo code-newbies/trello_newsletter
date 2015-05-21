@@ -842,7 +842,7 @@ class TrelloNewsletter
                                                           <td valign="top" width="350">
                                                               <div mc:edit="std_footer">
                                   <em>Copyright &copy; *|CURRENT_YEAR|* *|LIST:COMPANY|*, All rights reserved.</em>
-                                  *|IFNOT:ARCHIVE_PAGE|* *|LIST:DESCRIPTION|*
+                                  *|IFNOT:ARCHIVE_PAGE|* *|LIST:DESCRIPTION|* *|END:IF|*
                                   </div>
                                                           </td>
                                                       </tr>
