@@ -234,6 +234,11 @@ class TrelloNewsletter
             /*@editable*/ font-weight:normal;
             /*@editable*/ text-decoration:none;
           }
+          
+          .archive-text{
+            text-align: right;
+            line-height: 120%;
+          }
 
           /* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: HEADER /\/\/\/\/\/\/\/\/\/\ */
 
@@ -590,13 +595,16 @@ class TrelloNewsletter
                 line-height: 150% !important;
               }
 
-              .preview p{
+              .preview p, .archive-text {
                 font-size:8px !important;
                 color:#505050 !important;
                 font-family: Arial !important;
                 line-height: 100% !important;
                 text-align: left !important;
+              }
 
+              .archive-text{
+                text-align: left !important;
               }
             }
           }
@@ -616,15 +624,15 @@ class TrelloNewsletter
                                   <!-- // Begin Module: Standard Preheader \ -->
                                     <table border="0" cellpadding="10" cellspacing="0" width="100%">
                                       <tr>
-                                          <td valign="top">
+                                          <td valign="top" width="50%">
                                               <div class="preview" mc:edit="std_preheader_content">
                                                 #{meta.preview_text}
-                                                </div>
+                                              </div>
                                             </td>
                                             <!-- *|IFNOT:ARCHIVE_PAGE|* -->
-                      <td valign="top" width="190">
-                                              <div mc:edit="std_preheader_links">
-                                                  Is this email not displaying correctly?<br /><a href="*|ARCHIVE|*" target="_blank">View it in your browser</a>.
+                      <td valign="top" width="50%">
+                                              <div mc:edit="std_preheader_links" style="text-align: right">
+                                                  <p class="archive-text">Is this email not displaying correctly?<br /><a href="*|ARCHIVE|*" target="_blank">View it in your browser</a>.</p>
                                                 </div>
                                             </td>
                       <!-- *|END:IF|* -->
