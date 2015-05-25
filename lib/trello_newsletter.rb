@@ -673,8 +673,10 @@ class TrelloNewsletter
     content_lists.each do |list|
       template.puts "<tr>"
       template.puts "<td valign=\"top\">"
+      template.puts "<div>"
       template.puts "<h1 class=\"h1\">#{list.name}</h1>"
       template.puts"<hr />"
+      template.puts "</div>"
       list.cards.each do |card|
         post = Post.new(card)
         if post.attachment
@@ -696,8 +698,10 @@ class TrelloNewsletter
     end
     template.puts "<tr>"
     template.puts "<td valign=\"top\">"
+    template.puts "<div>"
     template.puts "<h1 class=\"h1\">#{sponsors.name}</h1>"
     template.puts"<hr />"
+    template.puts "</div>"
     sponsors.cards.each do |card|
       post = Post.new(card)
       stripped_post = post.body.gsub("<p>","").gsub("</p>","")
@@ -711,7 +715,9 @@ class TrelloNewsletter
     template.puts "</tr>"
     template.puts "<tr>"
     template.puts "<td valign=\"top\">"
+    template.puts "<div>"
     template.puts "<h1 class=\"callout-title\">Join us</h1>"
+    template.puts "</div>"
     callouts.cards.each do |card|
       post = Post.new(card)
       template.puts "<div class=\"callout\">"
