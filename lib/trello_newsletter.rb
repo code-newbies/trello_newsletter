@@ -35,6 +35,7 @@ class TrelloNewsletter
     callouts = lists.find { |n| n.attributes[:name] == "Callouts" }
     sponsors = lists.find { |n| n.attributes[:name] == "Sponsors" }
 
+    puts "starting html output"
     html_output(meta, content_lists, callouts, sponsors)
     puts "zippity zip zip"
     zip_output
@@ -801,7 +802,7 @@ class TrelloNewsletter
     template.puts "</tr>"
     template.puts "<tr>"
     template.puts "<td valign=\"top\">"
-    template.puts "<h1 class=\"h1 callout-title\">Join us</h1>"
+    template.puts "<h1 class=\"callout-title\">Join us</h1>"
     callouts.cards.each do |card|
       post = Post.new(card)
       template.puts "<div class=\"callout\">"
@@ -869,11 +870,13 @@ class TrelloNewsletter
       </body>
   </html>
     DOC
+    template.close
   end
 
   # https://apidocs.mailchimp.com/api/2.0/campaigns/create.php
   # https://apidocs.mailchimp.com/api/2.0/lists/list.php
   def export_to_mailchimp(email_subject)
+    puts "exporting to mailchimp!"
     gb = Gibbon::API.new(ENV['MAILCHIMP_KEY'])
     recipient_list = gb.lists.list({:filters => {:list_name => "From Website"}})
     list_id = recipient_list['data'].first['id']
