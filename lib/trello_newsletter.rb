@@ -589,6 +589,15 @@ class TrelloNewsletter
                 font-weight: 900 !important;
                 line-height: 150% !important;
               }
+
+              .preview p{
+                font-size:8px !important;
+                color:#505050 !important;
+                font-family: Arial !important;
+                line-height: 100% !important;
+                text-align: left !important;
+
+              }
             }
           }
         </style>
