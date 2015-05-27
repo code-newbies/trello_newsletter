@@ -673,7 +673,7 @@ class TrelloNewsletter
     content_lists.each do |list|
       template.puts "<tr>"
       template.puts "<td valign=\"top\">"
-      template.puts "<div>"
+      template.puts "<div class=\"clearfix\">"
       template.puts "<h1 class=\"h1\">#{list.name}</h1>"
       template.puts"<hr />"
       template.puts "</div>"
@@ -698,7 +698,7 @@ class TrelloNewsletter
     end
     template.puts "<tr>"
     template.puts "<td valign=\"top\">"
-    template.puts "<div>"
+    template.puts "<div class=\"clearfix\">"
     template.puts "<h1 class=\"h1\">#{sponsors.name}</h1>"
     template.puts"<hr />"
     template.puts "</div>"
@@ -715,7 +715,7 @@ class TrelloNewsletter
     template.puts "</tr>"
     template.puts "<tr>"
     template.puts "<td valign=\"top\">"
-    template.puts "<div>"
+    template.puts "<div class=\"clearfix\">"
     template.puts "<h1 class=\"callout-title\">Join us</h1>"
     template.puts "</div>"
     callouts.cards.each do |card|
