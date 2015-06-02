@@ -552,4 +552,128 @@ class HtmlStitcher
       </head>
     DOC
   end
+
+  def body_start(meta)
+    body_string = <<-DOC.gsub(/^ {4}/, '')
+      <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+      
+        <center>
+            <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
+                <tr>
+                    <td align="center" valign="top">
+                          <!-- // Begin Template Preheader \\ -->
+                          <table border="0" cellpadding="10" cellspacing="0" id="templatePreheader">
+                              <tr>
+                                  <td valign="top" class="preheaderContent">
+                                    <!-- // Begin Module: Standard Preheader \ -->
+                                      <table border="0" cellpadding="10" cellspacing="0" width="100%">
+                                        <tr>
+                                            <td valign="top" width="50%">
+                                                <div class="preview" mc:edit="std_preheader_content">
+                                                  #{meta.preview_text}
+                                                </div>
+                                              </td>
+                                              <!-- *|IFNOT:ARCHIVE_PAGE|* -->
+                        <td valign="top" width="50%">
+                                                <div mc:edit="std_preheader_links" style="text-align: right">
+                                                    <p class="archive-text">Is this email not displaying correctly?<br /><a href="*|ARCHIVE|*" target="_blank">View it in your browser</a>.</p>
+                                                  </div>
+                                              </td>
+                        <!-- *|END:IF|* -->
+                                          </tr>
+                                      </table>
+                                    <!-- // End Module: Standard Preheader \ -->
+                                  </td>
+                              </tr>
+                          </table>
+                          <!-- // End Template Preheader \\ -->
+                        <table border="0" cellpadding="0" cellspacing="0" id="templateContainer">
+                            <tr>
+                                <td align="center" valign="top">
+                                      <!-- // Begin Template Header \\ -->
+                                    <table border="0" cellpadding="0" cellspacing="0" id="templateHeader">
+                                          <tr>
+                                              <td class="headerContent">
+                                                <!-- // Begin Module: Standard Header Image \\ -->
+                                                <img src="#{meta.header_image}" style="max-width:100%;" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext />
+                                                <!-- // End Module: Standard Header Image \\ -->
+
+                                              </td>
+                                          </tr>
+                                      </table>
+                                      <!-- // End Template Header \\ -->
+                                  </td>
+                              </tr>
+                              <tr> 
+                                <td align="center" valign="top">
+                                      <!-- // Begin Template Body \\ -->
+                                    <table border="0" cellpadding="0" cellspacing="0" id="templateBody">
+                                        <tr>
+                                              <td valign="top" class="bodyContent">
+                                                  <!-- // Begin Module: Standard Content \\ -->
+                                                  <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                                                    <tr>
+    DOC
+  end
+
+  def body_end
+    body_string = <<-DOC.gsub(/^ {4}/, '')
+                    </tr>
+                        </table>
+                                 <!-- // End Module: Standard Content \\ -->
+                                              </td>
+                                          </tr>
+                                      </table>
+                                      <!-- // End Template Body \\ -->
+                                  </td>
+                              </tr>
+                            <tr>
+                                <td align="center" valign="top">
+                                      <!-- // Begin Template Footer \\ -->
+                                    <table border="0" cellpadding="10" cellspacing="0" id="templateFooter">
+                                        <tr>
+                                            <td valign="top" class="footerContent">
+                                                  <!-- // Begin Module: Standard Footer \\ -->
+                                                  <table border="0" cellpadding="10" cellspacing="0" width="100%">
+                                                      <tr>
+                                                          <td colspan="2" valign="middle" id="social">
+                                                              <div mc:edit="std_social">
+                                                                  &nbsp;<a href="*|TWITTER:PROFILEURL|*">Follow us @CodeNewbie</a> | <a href="*|FORWARD|*">forward to a friend</a> | <a href="http://codenewbie.org/">Visit us at www.codenewbie.org</a> | <a href="mailto:hello@codenewbie.org"> Email Us </a>&nbsp;
+                                                              </div>
+                                                          </td>
+                                                      </tr>
+                                                      <tr>
+                                                          <td valign="top" width="350">
+                                                              <div mc:edit="std_footer">
+                                  <em>Copyright &copy; *|CURRENT_YEAR|* *|LIST:COMPANY|*, All rights reserved.</em>
+                                  *|IFNOT:ARCHIVE_PAGE|* *|LIST:DESCRIPTION|* *|END:IF|*
+                                  </div>
+                                                          </td>
+                                                      </tr>
+                                                      <tr>
+                                                          <td colspan="2" valign="middle" id="utility">
+                                                              <div mc:edit="std_utility">
+                                                                  &nbsp;<a href="*|UNSUB|*">unsubscribe from this list</a> | <a href="*|UPDATE_PROFILE|*">update subscription preferences</a>&nbsp;
+                                                              </div>
+                                                          </td>
+                                                      </tr>
+                                                  </table>
+                                                  <!-- // End Module: Standard Footer \\ -->
+                                              </td>
+                                          </tr>
+                                      </table>
+                                      <!-- // End Template Footer \\ -->
+                                  </td>
+                              </tr>
+                          </table>
+                      </td>
+                  </tr>
+              </table>
+          </center>
+      </body>
+  </html>
+    DOC
+  end
+    
+
 end
