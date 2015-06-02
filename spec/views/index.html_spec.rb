@@ -8,7 +8,6 @@ describe "html output" do
   end
 
   it "contains a head tag" do
-    # at_css will only return a single result
     expect(@page.css('head').count).to eq(1)
   end
 
