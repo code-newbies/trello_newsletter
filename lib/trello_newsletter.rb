@@ -35,6 +35,7 @@ class TrelloNewsletter
     callouts = lists.find { |n| n.attributes[:name] == "Callouts" }
     sponsors = lists.find { |n| n.attributes[:name] == "Sponsors" }
 
+    puts "starting html output"
     html_output(meta, content_lists, callouts, sponsors)
     puts "zippity zip zip"
     zip_output
@@ -232,6 +233,11 @@ class TrelloNewsletter
             /*@editable*/ color:#7ed321;
             /*@editable*/ font-weight:normal;
             /*@editable*/ text-decoration:none;
+          }
+          
+          .archive-text{
+            text-align: right;
+            line-height: 120%;
           }
 
           /* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: HEADER /\/\/\/\/\/\/\/\/\/\ */
@@ -588,115 +594,19 @@ class TrelloNewsletter
                 font-weight: 900 !important;
                 line-height: 150% !important;
               }
+
+              .preview p, .archive-text {
+                font-size:8px !important;
+                color:#505050 !important;
+                font-family: Arial !important;
+                line-height: 100% !important;
+                text-align: left !important;
+              }
+
+              .archive-text{
+                text-align: left !important;
+              }
             }
-
-            @media only screen and (max-width: 480px){
-
-              /* /\/\/\/\/\/\/ CLIENT-SPECIFIC MOBILE STYLES /\/\/\/\/\/\/ */
-              body, table, td, p, a, li, blockquote{-webkit-text-size-adjust:none !important;} /* Prevent Webkit platforms from changing default text sizes */
-                      body{width:100% !important; min-width:100% !important;} /* Prevent iOS Mail from adding padding to the body */
-              /* /\/\/\/\/\/\/ MOBILE RESET STYLES /\/\/\/\/\/\/ */
-              #bodyCell{padding:10px !important;}
-              /* /\/\/\/\/\/\/ MOBILE TEMPLATE STYLES /\/\/\/\/\/\/ */
-              /* ======== Page Styles ======== */
-              /**
-              * @tab Mobile Styles
-              * @section template width
-              * @tip Make the template fluid for portrait or landscape view adaptability. If a fluid layout doesn't work for you, set the width to 300px instead.
-              */
-              #templateContainer{
-                max-width:300px !important;
-                /*@editable*/ width:100% !important;
-              }
-              /**
-              * @tab Mobile Styles
-              * @section heading 1
-              * @tip Make the first-level headings larger in size for better readability on small screens.
-              */
-              h1{
-                /*@editable*/ font-size:10px !important;
-                /*@editable*/ line-height:100% !important;
-                /*@editable*/ text-transform:uppercase !important;
-              }
-              /**
-              * @tab Mobile Styles
-              * @section heading 2
-              * @tip Make the second-level headings larger in size for better readability on small screens.
-              */
-              h2{
-                /*@editable*/ font-size:18px !important;
-                /*@editable*/ line-height:100% !important;
-              }
-              /**
-              * @tab Mobile Styles
-              * @section heading 3
-              * @tip Make the third-level headings larger in size for better readability on small screens.
-              */
-              h3{
-                /*@editable*/ font-size:18px !important;
-                /*@editable*/ line-height:100% !important;
-              }
-              /**
-              * @tab Mobile Styles
-              * @section heading 4
-              * @tip Make the fourth-level headings larger in size for better readability on small screens.
-              */
-              h4{
-                /*@editable*/ font-size:16px !important;
-                /*@editable*/ line-height:100% !important;
-              }
-              /* ======== Header Styles ======== */
-              #templatePreheader{display:none !important;} /* Hide the template preheader to save space */
-              /**
-              * @tab Mobile Styles
-              * @section header image
-              * @tip Make the main header image fluid for portrait or landscape view adaptability, and set the image's original width as the max-width. If a fluid setting doesn't work, set the image width to half its original size instead.
-              */
-              #headerImage{
-                height:auto !important;
-                /*@editable*/ max-width:300px !important;
-                /*@editable*/ width:100% !important;
-              }
-              /**
-              * @tab Mobile Styles
-              * @section header text
-              * @tip Make the header content text larger in size for better readability on small screens. We recommend a font size of at least 16px.
-              */
-              .headerContent{
-                /*@editable*/ font-size:20px !important;
-                /*@editable*/ line-height:125% !important;
-              }
-              /* ======== Body Styles ======== */
-              /**
-              * @tab Mobile Styles
-              * @section body image
-              * @tip Make the main body image fluid for portrait or landscape view adaptability, and set the image's original width as the max-width. If a fluid setting doesn't work, set the image width to half its original size instead.
-              */
-              #bodyImage{
-                height:auto !important;
-                /*@editable*/ max-width:280px !important;
-                /*@editable*/ width:100% !important;
-              }
-              /**
-              * @tab Mobile Styles
-              * @section body text
-              * @tip Make the body content text larger in size for better readability on small screens. We recommend a font size of at least 16px.
-              */
-              .bodyContent{
-                /*@editable*/ font-size:18px !important;
-                /*@editable*/ line-height:125% !important;
-              }
-              /* ======== Footer Styles ======== */
-              /**
-              * @tab Mobile Styles
-              * @section footer text
-              * @tip Make the body content text larger in size for better readability on small screens.
-              */
-              .footerContent{
-                /*@editable*/ font-size:14px !important;
-                /*@editable*/ line-height:115% !important;
-              }
-              .footerContent a{display:block !important;} /* Place footer social and utility links on their own lines, for easier access */
           }
         </style>
       </head>
@@ -714,15 +624,15 @@ class TrelloNewsletter
                                   <!-- // Begin Module: Standard Preheader \ -->
                                     <table border="0" cellpadding="10" cellspacing="0" width="100%">
                                       <tr>
-                                          <td valign="top">
+                                          <td valign="top" width="50%">
                                               <div class="preview" mc:edit="std_preheader_content">
                                                 #{meta.preview_text}
-                                                </div>
+                                              </div>
                                             </td>
                                             <!-- *|IFNOT:ARCHIVE_PAGE|* -->
-                      <td valign="top" width="190">
-                                              <div mc:edit="std_preheader_links">
-                                                  Is this email not displaying correctly?<br /><a href="*|ARCHIVE|*" target="_blank">View it in your browser</a>.
+                      <td valign="top" width="50%">
+                                              <div mc:edit="std_preheader_links" style="text-align: right">
+                                                  <p class="archive-text">Is this email not displaying correctly?<br /><a href="*|ARCHIVE|*" target="_blank">View it in your browser</a>.</p>
                                                 </div>
                                             </td>
                       <!-- *|END:IF|* -->
@@ -763,8 +673,10 @@ class TrelloNewsletter
     content_lists.each do |list|
       template.puts "<tr>"
       template.puts "<td valign=\"top\">"
+      template.puts "<div class=\"clearfix\">"
       template.puts "<h1 class=\"h1\">#{list.name}</h1>"
       template.puts"<hr />"
+      template.puts "</div>"
       list.cards.each do |card|
         post = Post.new(card)
         if post.attachment
@@ -786,8 +698,10 @@ class TrelloNewsletter
     end
     template.puts "<tr>"
     template.puts "<td valign=\"top\">"
+    template.puts "<div class=\"clearfix\">"
     template.puts "<h1 class=\"h1\">#{sponsors.name}</h1>"
     template.puts"<hr />"
+    template.puts "</div>"
     sponsors.cards.each do |card|
       post = Post.new(card)
       stripped_post = post.body.gsub("<p>","").gsub("</p>","")
@@ -801,7 +715,9 @@ class TrelloNewsletter
     template.puts "</tr>"
     template.puts "<tr>"
     template.puts "<td valign=\"top\">"
-    template.puts "<h1 class=\"h1 callout-title\">Join us</h1>"
+    template.puts "<div class=\"clearfix\">"
+    template.puts "<h1 class=\"callout-title\">Join us</h1>"
+    template.puts "</div>"
     callouts.cards.each do |card|
       post = Post.new(card)
       template.puts "<div class=\"callout\">"
@@ -869,11 +785,13 @@ class TrelloNewsletter
       </body>
   </html>
     DOC
+    template.close
   end
 
   # https://apidocs.mailchimp.com/api/2.0/campaigns/create.php
   # https://apidocs.mailchimp.com/api/2.0/lists/list.php
   def export_to_mailchimp(email_subject)
+    puts "exporting to mailchimp!"
     gb = Gibbon::API.new(ENV['MAILCHIMP_KEY'])
     recipient_list = gb.lists.list({:filters => {:list_name => "From Website"}})
     list_id = recipient_list['data'].first['id']
