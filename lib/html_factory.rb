@@ -1,6 +1,6 @@
-class HtmlStitcher
+class HtmlFactory
   def head
-    head_string = <<-DOC.gsub(/^ {4}/, '')
+    <<-DOC.gsub(/^ {4}/, '')
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html>
         <head>
@@ -554,7 +554,7 @@ class HtmlStitcher
   end
 
   def body_start(meta)
-    body_string = <<-DOC.gsub(/^ {4}/, '')
+    <<-DOC.gsub(/^ {4}/, '')
       <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
       
         <center>
@@ -617,7 +617,7 @@ class HtmlStitcher
   end
 
   def body_end
-    body_string = <<-DOC.gsub(/^ {4}/, '')
+    <<-DOC.gsub(/^ {4}/, '')
                     </tr>
                         </table>
                                  <!-- // End Module: Standard Content \\ -->
@@ -675,5 +675,79 @@ class HtmlStitcher
     DOC
   end
     
+  def content(content_lists, callouts, sponsors)
+    string = ""
+    content_lists.each do |list|
+      content_string = <<-DOC.gsub(/^ {4}/, '')
+        "<tr>"
+        "<td valign=\"top\">"
+        "<div class=\"clearfix\">"
+        "<h1 class=\"h1\">#{list.name}</h1>"
+        "<hr />"
+        "</div>"
+      DOC
+      string << content_string
+      list.cards.each do |card|
+        post = Post.new(card)
+        if post.attachment
+          stripped_post = post.body.gsub("<p>","").gsub("</p>","")
+          post_string = <<-DOC.gsub(/^ {4}/, '')
+           "<div class=\"clearfix\" style=\"clear:both;\">"
+           "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}</h2></a>"
+           "    <p class=\"photo-content\">#{stripped_post}</p>"
+           "    <a href=\"#{post.link}\" target=\"_blank\"><img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\"></a>"
+           "</div>"
+           DOC
+        else
+           post_string = <<-DOC.gsub(/^ {4}/, '')
+           "<div class=\"clearfix\">"
+           "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}<span class=\"label-#{post.label.gsub(" ", "-") if post.label}\">#{post.label}</span></h2></a>"
+           "    #{post.body}"
+           "</div>"
+           DOC
+        end
+        string << post_string
+      end
+      content_string = <<-DOC.gsub(/^ {4}/, '')
+       "</td>"
+       "</tr>"
+      DOC
+      string << content_string
+    end
+    string
+    # "<tr>"
+    # "<td valign=\"top\">"
+    # "<div class=\"clearfix\">"
+    # "<h1 class=\"h1\">#{sponsors.name}</h1>"
+    #"<hr />"
+    # "</div>"
+    #sponsors.cards.each do |card|
+    #  post = Post.new(card)
+    #  stripped_post = post.body.gsub("<p>","").gsub("</p>","")
+    #   "<div class=\"clearfix\" style=\"clear:both;\">"
+    #   "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}</h2></a>"
+    #   "    <p class=\"photo-content\">#{stripped_post}</p>"
+    #   "    <a href=\"#{post.link}\" target=\"_blank\"><img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\"></a>"
+    #   "</div>"
+    #end
+    # "</td>"
+    # "</tr>"
+    # "<tr>"
+    # "<td valign=\"top\">"
+    # "<div class=\"clearfix\">"
+    # "<h1 class=\"callout-title\">Join us</h1>"
+    # "</div>"
+    #callouts.cards.each do |card|
+    #  post = Post.new(card)
+    #   "<div class=\"callout\">"
+    #   "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}</h2></a>"
+    #   "    #{post.body}"
+    #   "</div>"
+    #end
+    # "</td>"
+    # "</tr>"
+    # "<tr>"
+    # "</tr>"
+  end
 
 end

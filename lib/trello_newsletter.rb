@@ -1,7 +1,7 @@
 require_relative "trello_newsletter/version"
 require_relative "meta.rb"
 require_relative "post.rb"
-require_relative "html_stitcher.rb"
+require_relative "html_factory.rb"
 require "pry"
 require "trello"
 require "gibbon"
@@ -61,69 +61,11 @@ class TrelloNewsletter
 
   def html_output(meta, content_lists, callouts, sponsors)
     template = File.open("index.html", "w")
-    html_stitch = HtmlStitcher.new
-    template.puts(html_stitch.head)
-    template.puts(html_stitch.body_start(meta))
-    content_lists.each do |list|
-      template.puts "<tr>"
-      template.puts "<td valign=\"top\">"
-      template.puts "<div class=\"clearfix\">"
-      template.puts "<h1 class=\"h1\">#{list.name}</h1>"
-      template.puts"<hr />"
-      template.puts "</div>"
-      list.cards.each do |card|
-        post = Post.new(card)
-        if post.attachment
-          stripped_post = post.body.gsub("<p>","").gsub("</p>","")
-          template.puts "<div class=\"clearfix\" style=\"clear:both;\">"
-          template.puts "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}</h2></a>"
-          template.puts "    <p class=\"photo-content\">#{stripped_post}</p>"
-          template.puts "    <a href=\"#{post.link}\" target=\"_blank\"><img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\"></a>"
-          template.puts "</div>"
-        else
-          template.puts "<div class=\"clearfix\">"
-          template.puts "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}<span class=\"label-#{post.label.gsub(" ", "-") if post.label}\">#{post.label}</span></h2></a>"
-          template.puts "    #{post.body}"
-          template.puts "</div>"
-        end
-      end
-      template.puts "</td>"
-      template.puts "</tr>"
-    end
-    template.puts "<tr>"
-    template.puts "<td valign=\"top\">"
-    template.puts "<div class=\"clearfix\">"
-    template.puts "<h1 class=\"h1\">#{sponsors.name}</h1>"
-    template.puts"<hr />"
-    template.puts "</div>"
-    sponsors.cards.each do |card|
-      post = Post.new(card)
-      stripped_post = post.body.gsub("<p>","").gsub("</p>","")
-      template.puts "<div class=\"clearfix\" style=\"clear:both;\">"
-      template.puts "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}</h2></a>"
-      template.puts "    <p class=\"photo-content\">#{stripped_post}</p>"
-      template.puts "    <a href=\"#{post.link}\" target=\"_blank\"><img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\"></a>"
-      template.puts "</div>"
-    end
-    template.puts "</td>"
-    template.puts "</tr>"
-    template.puts "<tr>"
-    template.puts "<td valign=\"top\">"
-    template.puts "<div class=\"clearfix\">"
-    template.puts "<h1 class=\"callout-title\">Join us</h1>"
-    template.puts "</div>"
-    callouts.cards.each do |card|
-      post = Post.new(card)
-      template.puts "<div class=\"callout\">"
-      template.puts "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}</h2></a>"
-      template.puts "    #{post.body}"
-      template.puts "</div>"
-    end
-    template.puts "</td>"
-    template.puts "</tr>"
-    template.puts "<tr>"
-    template.puts "</tr>"
-    template.puts(html_stitch.body_end)
+    html_page = HtmlFactory.new
+    template.puts(html_page.head)
+    template.puts(html_page.body_start(meta))
+    template.puts(html_page.content(content_lists, callouts, sponsors))
+    template.puts(html_page.body_end)
     template.close
   end
 
