@@ -23,5 +23,7 @@ describe "html output" do
   it "contains newsletter content" do
     expect(@page.text).to include("Podcast")
     expect(@page.text).to include("ICYMI")
+    expect(@page.text).to include("callout")
+    expect(@page.text).to include("Sponsors")
   end
 end
