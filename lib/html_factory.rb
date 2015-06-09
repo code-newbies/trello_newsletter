@@ -677,6 +677,13 @@ class HtmlFactory
     
   def content(content_lists, callouts, sponsors)
     string = ""
+    string << content_list_content(content_lists)
+    string << sponsor_content(sponsors)
+    string << callout_content(callouts)
+  end
+
+  def content_list_content(content_lists)
+    string = ""
     content_lists.each do |list|
       content_string = <<-DOC.gsub(/^ {4}/, '')
         <tr>
@@ -709,6 +716,11 @@ class HtmlFactory
         string << post_string
       end
     end
+    string
+  end
+
+  def sponsor_content(sponsors)
+    string = ""
     content_string = <<-DOC.gsub(/^ {4}/, '')
       </td>
       </tr>
@@ -732,6 +744,11 @@ class HtmlFactory
       DOC
       string << content_string 
     end
+    string
+  end
+
+  def callout_content(callouts)
+    string = ""
     content_string = <<-DOC.gsub(/^ {4}/, '')
       </td>
       </tr>

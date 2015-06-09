@@ -36,11 +36,11 @@ class TrelloNewsletter
     callouts = lists.find { |n| n.attributes[:name] == "Callouts" }
     sponsors = lists.find { |n| n.attributes[:name] == "Sponsors" }
 
-    puts "starting html output"
+    #puts "starting html output"
     html_output(meta, content_lists, callouts, sponsors)
-    puts "zippity zip zip"
+    #puts "zippity zip zip"
     zip_output
-    puts "Finished generating issue"
+    #puts "Finished generating issue"
   end
 
   def newsletter_title
