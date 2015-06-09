@@ -685,15 +685,7 @@ class HtmlFactory
   def content_list_content(content_lists)
     string = ""
     content_lists.each do |list|
-      content_string = <<-DOC.gsub(/^ {4}/, '')
-        <tr>
-        <td valign="top">
-        <div class="clearfix">
-        <h1 class="h1">#{list.name}</h1>
-        <hr />
-        </div>
-      DOC
-      string << content_string
+      string << section_title("h1", list.name, true)
       list.cards.each do |card|
         post = Post.new(card)
         if post.attachment
@@ -721,17 +713,9 @@ class HtmlFactory
 
   def sponsor_content(sponsors)
     string = ""
-    content_string = <<-DOC.gsub(/^ {4}/, '')
-      </td>
-      </tr>
-      <tr>
-      <td valign="top">
-      <div class="clearfix">
-      <h1 class="h1">#{sponsors.name}</h1>
-      <hr />
-      </div>
-    DOC
-    string << content_string
+    string << "</td>"
+    string << "</tr>"
+    string << section_title("h1", sponsors.name, true)
     sponsors.cards.each do |card|
       post = Post.new(card)
       stripped_post = post.body.gsub("<p>","").gsub("</p>","")
@@ -749,16 +733,9 @@ class HtmlFactory
 
   def callout_content(callouts)
     string = ""
-    content_string = <<-DOC.gsub(/^ {4}/, '')
-      </td>
-      </tr>
-      <tr>
-      <td valign="top">
-      <div class="clearfix">
-      <h1 class="callout-title">Join us</h1>
-      </div>
-    DOC
-    string << content_string
+    string << "</td>"
+    string << "</tr>"
+    string << section_title("callout-title", "Join us", false)
     callouts.cards.each do |card|
       post = Post.new(card)
       content_string = <<-DOC.gsub(/^ {4}/, '')
@@ -776,5 +753,22 @@ class HtmlFactory
       </tr>
     DOC
     string << content_string
+  end
+
+  def section_title(html_class, title, has_hr)
+    if has_hr
+      hr = "<hr />"
+    else
+      hr = ""
+    end
+
+    <<-DOC.gsub(/^ {4}/, '')
+      <tr>
+      <td valign="top">
+      <div class="clearfix">
+      <h1 class="#{html_class}">#{title}</h1>
+      #{hr}
+      </div>
+    DOC
   end
 end
