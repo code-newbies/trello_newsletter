@@ -679,12 +679,12 @@ class HtmlFactory
     string = ""
     content_lists.each do |list|
       content_string = <<-DOC.gsub(/^ {4}/, '')
-        "<tr>"
-        "<td valign=\"top\">"
-        "<div class=\"clearfix\">"
-        "<h1 class=\"h1\">#{list.name}</h1>"
-        "<hr />"
-        "</div>"
+        <tr>
+        <td valign="top">
+        <div class="clearfix">
+        <h1 class="h1">#{list.name}</h1>
+        <hr />
+        </div>
       DOC
       string << content_string
       list.cards.each do |card|
@@ -692,62 +692,72 @@ class HtmlFactory
         if post.attachment
           stripped_post = post.body.gsub("<p>","").gsub("</p>","")
           post_string = <<-DOC.gsub(/^ {4}/, '')
-           "<div class=\"clearfix\" style=\"clear:both;\">"
-           "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}</h2></a>"
-           "    <p class=\"photo-content\">#{stripped_post}</p>"
-           "    <a href=\"#{post.link}\" target=\"_blank\"><img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\"></a>"
-           "</div>"
+           <div class="clearfix" style="clear:both;">
+               <a href="#{post.link}"><h2 class="h2">#{post.title}</h2></a>
+               <p class="photo-content">#{stripped_post}</p>
+               <a href="#{post.link}" target="_blank"><img class="photo" src="#{post.attachment}" alt="Blog guest picture"></a>
+           </div>
            DOC
         else
            post_string = <<-DOC.gsub(/^ {4}/, '')
-           "<div class=\"clearfix\">"
-           "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}<span class=\"label-#{post.label.gsub(" ", "-") if post.label}\">#{post.label}</span></h2></a>"
-           "    #{post.body}"
-           "</div>"
+           <div class="clearfix">
+               <a href="#{post.link}"><h2 class="h2">#{post.title}<span class="label-#{post.label.gsub(" ", "-") if post.label}">#{post.label}</span></h2></a>
+               #{post.body}
+           </div>
            DOC
         end
         string << post_string
       end
+    end
+    content_string = <<-DOC.gsub(/^ {4}/, '')
+      </td>
+      </tr>
+      <tr>
+      <td valign="top">
+      <div class="clearfix">
+      <h1 class="h1">#{sponsors.name}</h1>
+      <hr />
+      </div>
+    DOC
+    string << content_string
+    sponsors.cards.each do |card|
+      post = Post.new(card)
+      stripped_post = post.body.gsub("<p>","").gsub("</p>","")
       content_string = <<-DOC.gsub(/^ {4}/, '')
-       "</td>"
-       "</tr>"
+        <div class="clearfix" style="clear:both;">
+            <a href="#{post.link}"><h2 class="h2">#{post.title}</h2></a>
+            <p class="photo-content">#{stripped_post}</p>
+            <a href="#{post.link}" target="_blank"><img class="photo" src="#{post.attachment}" alt="Blog guest picture"></a>
+       </div>
+      DOC
+      string << content_string 
+    end
+    content_string = <<-DOC.gsub(/^ {4}/, '')
+      </td>
+      </tr>
+      <tr>
+      <td valign="top">
+      <div class="clearfix">
+      <h1 class="callout-title">Join us</h1>
+      </div>
+    DOC
+    string << content_string
+    callouts.cards.each do |card|
+      post = Post.new(card)
+      content_string = <<-DOC.gsub(/^ {4}/, '')
+        <div class="callout">
+            <a href="#{post.link}"><h2 class="h2">#{post.title}</h2></a>
+            #{post.body}
+        </div>
       DOC
       string << content_string
     end
-    string
-    # "<tr>"
-    # "<td valign=\"top\">"
-    # "<div class=\"clearfix\">"
-    # "<h1 class=\"h1\">#{sponsors.name}</h1>"
-    #"<hr />"
-    # "</div>"
-    #sponsors.cards.each do |card|
-    #  post = Post.new(card)
-    #  stripped_post = post.body.gsub("<p>","").gsub("</p>","")
-    #   "<div class=\"clearfix\" style=\"clear:both;\">"
-    #   "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}</h2></a>"
-    #   "    <p class=\"photo-content\">#{stripped_post}</p>"
-    #   "    <a href=\"#{post.link}\" target=\"_blank\"><img class=\"photo\" src=\"#{post.attachment}\" alt=\"Blog guest picture\"></a>"
-    #   "</div>"
-    #end
-    # "</td>"
-    # "</tr>"
-    # "<tr>"
-    # "<td valign=\"top\">"
-    # "<div class=\"clearfix\">"
-    # "<h1 class=\"callout-title\">Join us</h1>"
-    # "</div>"
-    #callouts.cards.each do |card|
-    #  post = Post.new(card)
-    #   "<div class=\"callout\">"
-    #   "    <a href=\"#{post.link}\"><h2 class=\"h2\">#{post.title}</h2></a>"
-    #   "    #{post.body}"
-    #   "</div>"
-    #end
-    # "</td>"
-    # "</tr>"
-    # "<tr>"
-    # "</tr>"
+    content_string = <<-DOC.gsub(/^ {4}/, '')
+      </td>
+      </tr>
+      <tr>
+      </tr>
+    DOC
+    string << content_string
   end
-
 end
