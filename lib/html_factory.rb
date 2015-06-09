@@ -675,11 +675,11 @@ class HtmlFactory
     DOC
   end
     
-  def content(content_lists, callouts, sponsors)
+  def content(newsletter_content)
     string = ""
-    string << content_list_content(content_lists)
-    string << sponsor_content(sponsors)
-    string << callout_content(callouts)
+    string << content_list_content(newsletter_content[:content_lists])
+    string << sponsor_content(newsletter_content[:sponsors])
+    string << callout_content(newsletter_content[:callouts])
   end
 
   def content_list_content(content_lists)

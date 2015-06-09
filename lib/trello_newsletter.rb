@@ -35,9 +35,11 @@ class TrelloNewsletter
     content_lists = lists.reject { |n| REJECTED_LISTS.include?(n.attributes[:name]) }
     callouts = lists.find { |n| n.attributes[:name] == "Callouts" }
     sponsors = lists.find { |n| n.attributes[:name] == "Sponsors" }
+    newsletter_content = {content_lists: content_lists, callouts: callouts,
+                          sponsors: sponsors}
 
     #puts "starting html output"
-    html_output(meta, content_lists, callouts, sponsors)
+    html_output(meta, newsletter_content)
     #puts "zippity zip zip"
     zip_output
     #puts "Finished generating issue"
@@ -59,12 +61,12 @@ class TrelloNewsletter
   end
 
 
-  def html_output(meta, content_lists, callouts, sponsors)
+  def html_output(meta, newsletter_content)
     template = File.open("index.html", "w")
     html_page = HtmlFactory.new
     template.puts(html_page.head)
     template.puts(html_page.body_start(meta))
-    template.puts(html_page.content(content_lists, callouts, sponsors))
+    template.puts(html_page.content(newsletter_content))
     template.puts(html_page.body_end)
     template.close
   end
