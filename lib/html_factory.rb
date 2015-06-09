@@ -689,14 +689,7 @@ class HtmlFactory
       list.cards.each do |card|
         post = Post.new(card)
         if post.attachment
-          stripped_post = post.body.gsub("<p>","").gsub("</p>","")
-          post_string = <<-DOC.gsub(/^ {4}/, '')
-           <div class="clearfix" style="clear:both;">
-               <a href="#{post.link}"><h2 class="h2">#{post.title}</h2></a>
-               <p class="photo-content">#{stripped_post}</p>
-               <a href="#{post.link}" target="_blank"><img class="photo" src="#{post.attachment}" alt="Blog guest picture"></a>
-           </div>
-           DOC
+          post_string = picture_post(post)
         else
            post_string = <<-DOC.gsub(/^ {4}/, '')
            <div class="clearfix">
@@ -718,15 +711,7 @@ class HtmlFactory
     string << section_title("h1", sponsors.name, true)
     sponsors.cards.each do |card|
       post = Post.new(card)
-      stripped_post = post.body.gsub("<p>","").gsub("</p>","")
-      content_string = <<-DOC.gsub(/^ {4}/, '')
-        <div class="clearfix" style="clear:both;">
-            <a href="#{post.link}"><h2 class="h2">#{post.title}</h2></a>
-            <p class="photo-content">#{stripped_post}</p>
-            <a href="#{post.link}" target="_blank"><img class="photo" src="#{post.attachment}" alt="Blog guest picture"></a>
-       </div>
-      DOC
-      string << content_string 
+      string << picture_post(post)
     end
     string
   end
@@ -769,6 +754,18 @@ class HtmlFactory
       <h1 class="#{html_class}">#{title}</h1>
       #{hr}
       </div>
+    DOC
+  end
+
+  def picture_post(post)
+    stripped_post = post.body.gsub("<p>","").gsub("</p>","")
+
+    <<-DOC.gsub(/^ {4}/, '')
+      <div class="clearfix" style="clear:both;">
+          <a href="#{post.link}"><h2 class="h2">#{post.title}</h2></a>
+          <p class="photo-content">#{stripped_post}</p>
+          <a href="#{post.link}" target="_blank"><img class="photo" src="#{post.attachment}" alt="Blog guest picture"></a>
+     </div>
     DOC
   end
 end
