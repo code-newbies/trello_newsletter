@@ -8,6 +8,9 @@ require_relative "../lib/trello_newsletter.rb"
 VCR.configure do |config|
   config.cassette_library_dir = "spec/fixtures/vcr_cassettes"
   config.hook_into :webmock
+  config.filter_sensitive_data("MAILCHIMP_API_KEY") { ENV["MAILCHIMP_KEY"] }
+  config.filter_sensitive_data("TRELLO_MEMBER_TOKEN") { ENV["TRELLO_MEMBER_TOKEN"] }
+  config.filter_sensitive_data("TRELLO_DEVELOPER_PUBLIC_KEY") { ENV["TRELLO_DEVELOPER_PUBLIC_KEY"] }
 end
 
 RSpec.configure do |config|
