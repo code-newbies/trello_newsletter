@@ -685,7 +685,7 @@ class HtmlFactory
   def content_list_content(content_lists)
     string = ""
     content_lists.each do |list|
-      string << section_title("h1", list.name, true)
+      string << section_title("h1", list.name)
       list.cards.each do |card|
         post = Post.new(card)
         if post.attachment
@@ -708,7 +708,7 @@ class HtmlFactory
     string = ""
     string << "</td>"
     string << "</tr>"
-    string << section_title("h1", sponsors.name, true)
+    string << section_title("h1", sponsors.name)
     sponsors.cards.each do |card|
       post = Post.new(card)
       string << picture_post(post)
@@ -740,7 +740,7 @@ class HtmlFactory
     string << content_string
   end
 
-  def section_title(html_class, title, has_hr)
+  def section_title(html_class, title, has_hr=true)
     if has_hr
       hr = "<hr />"
     else
