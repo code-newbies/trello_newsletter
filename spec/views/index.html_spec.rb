@@ -23,5 +23,14 @@ describe "html output" do
   it "contains newsletter content" do
     expect(@page.text).to include("Podcast")
     expect(@page.text).to include("ICYMI")
+    expect(@page.text).to include("callout")
+    expect(@page.text).to include("Sponsors")
+    expect(@page.text).to include("Join us")
+    # Test for picture post method
+    expect(@page.text).to include("photo-content")
+    # Test for section title method
+    expect(@page.search("hr").count).to be > 0
+    # Test for callout content method
+    expect(@page.text).to include("callout")
   end
 end

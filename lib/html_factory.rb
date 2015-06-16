@@ -675,29 +675,21 @@ class HtmlFactory
     DOC
   end
     
-  def content(content_lists, callouts, sponsors)
+  def content(newsletter_content)
+    string = ""
+    string << content_list_content(newsletter_content[:content_lists])
+    string << sponsor_content(newsletter_content[:sponsors])
+    string << callout_content(newsletter_content[:callouts])
+  end
+
+  def content_list_content(content_lists)
     string = ""
     content_lists.each do |list|
-      content_string = <<-DOC.gsub(/^ {4}/, '')
-        <tr>
-        <td valign="top">
-        <div class="clearfix">
-        <h1 class="h1">#{list.name}</h1>
-        <hr />
-        </div>
-      DOC
-      string << content_string
+      string << section_title("h1", list.name)
       list.cards.each do |card|
         post = Post.new(card)
         if post.attachment
-          stripped_post = post.body.gsub("<p>","").gsub("</p>","")
-          post_string = <<-DOC.gsub(/^ {4}/, '')
-           <div class="clearfix" style="clear:both;">
-               <a href="#{post.link}"><h2 class="h2">#{post.title}</h2></a>
-               <p class="photo-content">#{stripped_post}</p>
-               <a href="#{post.link}" target="_blank"><img class="photo" src="#{post.attachment}" alt="Blog guest picture"></a>
-           </div>
-           DOC
+          post_string = picture_post(post)
         else
            post_string = <<-DOC.gsub(/^ {4}/, '')
            <div class="clearfix">
@@ -709,39 +701,26 @@ class HtmlFactory
         string << post_string
       end
     end
-    content_string = <<-DOC.gsub(/^ {4}/, '')
-      </td>
-      </tr>
-      <tr>
-      <td valign="top">
-      <div class="clearfix">
-      <h1 class="h1">#{sponsors.name}</h1>
-      <hr />
-      </div>
-    DOC
-    string << content_string
+    string
+  end
+
+  def sponsor_content(sponsors)
+    string = ""
+    string << "</td>"
+    string << "</tr>"
+    string << section_title("h1", sponsors.name)
     sponsors.cards.each do |card|
       post = Post.new(card)
-      stripped_post = post.body.gsub("<p>","").gsub("</p>","")
-      content_string = <<-DOC.gsub(/^ {4}/, '')
-        <div class="clearfix" style="clear:both;">
-            <a href="#{post.link}"><h2 class="h2">#{post.title}</h2></a>
-            <p class="photo-content">#{stripped_post}</p>
-            <a href="#{post.link}" target="_blank"><img class="photo" src="#{post.attachment}" alt="Blog guest picture"></a>
-       </div>
-      DOC
-      string << content_string 
+      string << picture_post(post)
     end
-    content_string = <<-DOC.gsub(/^ {4}/, '')
-      </td>
-      </tr>
-      <tr>
-      <td valign="top">
-      <div class="clearfix">
-      <h1 class="callout-title">Join us</h1>
-      </div>
-    DOC
-    string << content_string
+    string
+  end
+
+  def callout_content(callouts)
+    string = ""
+    string << "</td>"
+    string << "</tr>"
+    string << section_title("callout-title", "Join us", false)
     callouts.cards.each do |card|
       post = Post.new(card)
       content_string = <<-DOC.gsub(/^ {4}/, '')
@@ -759,5 +738,34 @@ class HtmlFactory
       </tr>
     DOC
     string << content_string
+  end
+
+  def section_title(html_class, title, has_hr=true)
+    if has_hr
+      hr = "<hr />"
+    else
+      hr = ""
+    end
+
+    <<-DOC.gsub(/^ {4}/, '')
+      <tr>
+      <td valign="top">
+      <div class="clearfix">
+      <h1 class="#{html_class}">#{title}</h1>
+      #{hr}
+      </div>
+    DOC
+  end
+
+  def picture_post(post)
+    stripped_post = post.body.gsub("<p>","").gsub("</p>","")
+
+    <<-DOC.gsub(/^ {4}/, '')
+      <div class="clearfix" style="clear:both;">
+          <a href="#{post.link}"><h2 class="h2">#{post.title}</h2></a>
+          <p class="photo-content">#{stripped_post}</p>
+          <a href="#{post.link}" target="_blank"><img class="photo" src="#{post.attachment}" alt="Blog guest picture"></a>
+     </div>
+    DOC
   end
 end
