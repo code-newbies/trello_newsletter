@@ -81,7 +81,7 @@ Again to make sure that this key is loaded every time you start a new terminal s
 Once we have both the Mailchimp and Trello Api keys we can go ahead and generate the newsletter.
 
 1. Navigate to the `Trello_newsletter` project, which you would have cloned in the [earlier step](#install).
-2. `bundle install` to install any dependencies.
+2. `bundle install --without test` to install any dependencies.
 3. Run `rake generate`.
 
 This rake task will do two things:
