@@ -30,5 +30,7 @@ describe "html output" do
     expect(@page.text).to include("photo-content")
     # Test for section title method
     expect(@page.search("hr").count).to be > 0
+    # Test for callout content method
+    expect(@page.text).to include("callout")
   end
 end
