@@ -14,6 +14,7 @@ Trello.configure do |config|
 end
 
 class TrelloNewsletter
+  attr_reader :title
   REJECTED_LISTS = [ "Meta", "Mailchimp doc info", "Callouts", "Sponsors" ]
 
   def board_name
@@ -30,7 +31,8 @@ class TrelloNewsletter
     meta_list = lists.select { |n| n.attributes[:name] == "Meta" }.first
     meta = Meta.new(meta_list)
 
-    @title = meta.title
+    title = meta.title
+
     content_lists = lists.reject { |n| REJECTED_LISTS.include?(n.attributes[:name]) }
     callouts = lists.find { |n| n.attributes[:name] == "Callouts" }
     sponsors = lists.find { |n| n.attributes[:name] == "Sponsors" }
@@ -45,7 +47,7 @@ class TrelloNewsletter
   end
 
   def newsletter_title
-    @title
+    title
   end
 
   def zip_output # It would be nice to pass in a filename rather than hardcoding it
@@ -72,7 +74,7 @@ class TrelloNewsletter
 
   # https://apidocs.mailchimp.com/api/2.0/campaigns/create.php
   # https://apidocs.mailchimp.com/api/2.0/lists/list.php
-  def export_to_mailchimp(email_subject)
+  def export_to_mailchimp(email_subject=title)
     puts "exporting to mailchimp!"
     gb = Gibbon::API.new(ENV['MAILCHIMP_KEY'])
     recipient_list = gb.lists.list({:filters => {:list_name => "From Website"}})
@@ -94,4 +96,10 @@ class TrelloNewsletter
                                                     content: {html: contents}})
     end
   end
+
+  def run
+    generate
+    export_to_mailchimp
+  end
 end
+
