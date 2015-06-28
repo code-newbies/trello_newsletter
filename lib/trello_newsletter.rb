@@ -31,7 +31,7 @@ class TrelloNewsletter
     meta_list = lists.select { |n| n.attributes[:name] == "Meta" }.first
     meta = Meta.new(meta_list)
 
-    title = meta.title
+    @title = meta.title
 
     content_lists = lists.reject { |n| REJECTED_LISTS.include?(n.attributes[:name]) }
     callouts = lists.find { |n| n.attributes[:name] == "Callouts" }
