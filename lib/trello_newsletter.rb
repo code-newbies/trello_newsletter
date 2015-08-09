@@ -63,7 +63,7 @@ class TrelloNewsletter
 
 
   def html_output(meta, newsletter_content)
-    template = File.open("index.html", "w")
+    template = File.open("tmp/index.html", "w")
     html_page = HtmlFactory.new
     template.puts(html_page.head)
     template.puts(html_page.body_start(meta))
