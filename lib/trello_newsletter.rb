@@ -54,7 +54,7 @@ class TrelloNewsletter
     # This tells zip to overwrite the zip
     Zip.continue_on_exists_proc = true # Should put this in a configuration file.
     Zip::File.open("newsletter_html.zip", Zip::File::CREATE) do |zip|
-      zip.add("index.html", "./index.html")
+      zip.add("index.html", "./tmp/index.html")
       if File.exists?("header_image.png")
         zip.add("header_image.png", "./header_image.png")
       end
